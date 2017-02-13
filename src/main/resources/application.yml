@@ -1,0 +1,56 @@
+spring:
+    mvc:
+        view:
+            prefix: /WEB-INF/jsp/
+            suffix: .jsp
+        # static-path-pattern: "/"
+    jackson:
+        date-format: yyyy-MM-dd'T'HH:mm:ss.SSSXXX
+        time-zone : Asia/Seoul
+        
+server:
+    error:
+        whitelabel:
+            enabled: false
+
+spring.data.elasticsearch:
+  cluster-name: cluster-icgs
+  cluster-nodes: 127.0.0.1:9300
+  repositories.enabled: true
+  properties:
+    # Home directory of the embedded Elasticsearch instance. Default to the current working directory.
+    # elasticsearch.mapping.config=classpath:/mapping.json
+    path.home: target/elastic 
+    path.plugins: classpath:plugins
+    node.name: "node-icgs"
+    node.master: true
+    node.data: true
+
+    index.number_of_shards: 3
+    index.number_of_replicas: 3
+    index.mapper.dynamic: true
+    index.refresh_interval: "1s"
+    action.auto_create_index: true
+    action.disable_shutdown: true
+
+    network.host: localhost
+    network.bind_host: 0.0.0.0
+    network.publish_host: 0.0.0.0
+    
+    transport.tcp.port: 9300
+    transport.tcp.compress: true
+    http.port: 9200
+    http.enabled: true
+
+    client.transport.sniff: false
+    client.transport.ping_timeout: "20s"
+
+    # gateway.type: local
+    discover.zen.ping.multicast.enabled: false
+    discover.zen.minimum_master_nodes: 2
+    discover.zen.ping.unicast.hosts: ["localhost:9300", "localhost:9301", "localhost:9302"]
+
+    transport.tcp.connect_timeout: 120s            
+    bootstrap.mlockall: true
+
+    
