@@ -6,7 +6,7 @@
 	<groupId>net.ion</groupId>
 	<artifactId>icgs</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>jar</packaging>
+	<packaging>war</packaging>
 
 	<name>ICGS</name>
 	<description>icgs</description>
