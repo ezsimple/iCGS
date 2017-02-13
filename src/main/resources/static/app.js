@@ -34,7 +34,7 @@ function disconnect() {
 }
 
 function sendName() {
-    stompClient.send("/app/hello/"+id, {}, JSON.stringify({'name': $("#name").val()}));
+    stompClient.send("/chat/hello/"+id, {}, JSON.stringify({'name': $("#name").val()}));
 }
 
 function showGreeting(req, res) {
