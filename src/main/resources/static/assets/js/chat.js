@@ -73,7 +73,7 @@ function showGreeting(responseMesg) {
 	$("#conversations")
 		.append("<li class='right clearfix'>")
 		.append("<span class='chat-img pull-right'>")
-		.append("<img src='http://placehold.it/50/FA6F57/fff&amp;text=BOT' alt='User Avatar' class='img-circle'>")
+		.append("<img src='http://placehold.it/50/FA6F57/fff&amp;text=BOT' alt='User Avatar' class='img-circle pull-right'>")
 		.append("</span>")
 		.append("<div class='chat-body clearfix'>")
 		.append("<div class='header'>")
