@@ -20,8 +20,8 @@ function connect() {
         // setConnected(true);
         $("#conversation").show();
         console.log('Connected: ' + frame);
-        stompClient.subscribe('/topic/greetings', function (greeting) {
-            showGreeting(JSON.parse(greeting.body).req,JSON.parse(greeting.body).res);
+        stompClient.subscribe('/topic/greetings', function (callback) {
+            showGreeting(JSON.parse(callback.body));
         });
     });
 }
@@ -34,10 +34,10 @@ function disconnect() {
     console.log("Disconnected");
 }
 
-function sendName() {
-	let v = $("#name").val();
-	console.log('sendName' + v);
-    stompClient.send("/chat/hello/"+id, {}, JSON.stringify({'name': $("#name").val()}));
+function sendMesg() {
+	let v = $("#mesg").val();
+	console.log('sendMesg' + v);
+    stompClient.send("/chat/hello/"+id, {}, JSON.stringify({'mesg': $("#mesg").val()}));
 }
 
 function toBottom() {
@@ -46,10 +46,15 @@ function toBottom() {
 }
 
 function cleanInput() {
-	$('#name').val('');
+	$('#mesg').val('');
 }
 
-function showGreeting(req, res) {
+function showGreeting(responseMesg) {
+	let req = responseMesg.req;
+	let reqTime = responseMesg.reqTime;
+	let res = responseMesg.res;
+	let resTime = responseMesg.resTime;
+
 	$("#conversations").attr('display','inline');
 	$("#conversations")
 		.append("<li class='left clearfix'>")
@@ -58,7 +63,7 @@ function showGreeting(req, res) {
 		.append("</span>")
 		.append("<div class='chat-body clearfix'>")
 		.append("<div class='header'>")
-		.append("<small class='pull-right text-muted'><span class='glyphicon glyphicon-time'></span>14 mins ago</small>")
+		.append("<small class='pull-right text-muted'><span class='glyphicon glyphicon-time'></span>"+reqTime+"</small>")
 		.append("<strong class='primary-font'>Question</strong>") 
 		.append("</div>")
 		.append("<p>"+req+"</p>")
@@ -72,7 +77,7 @@ function showGreeting(req, res) {
 		.append("</span>")
 		.append("<div class='chat-body clearfix'>")
 		.append("<div class='header'>")
-		.append("<small class=' text-muted'><span class='glyphicon glyphicon-time'></span>15 mins ago</small>")
+		.append("<small class=' text-muted'><span class='glyphicon glyphicon-time'></span>"+resTime+"</small>")
 		.append("<strong class='pull-right primary-font'>Answer</strong>")
 		.append("</div>")
 		.append("<p>"+res+"</p>")
@@ -91,7 +96,7 @@ $(function () {
     });
     $( "#connect" ).click(function() { connect(); });
     $( "#disconnect" ).click(function() { disconnect(); });
-    $( "#send" ).click(function() { sendName(); });
+    $( "#send" ).click(function() { sendMesg(); });
 });
 $(document).ready(function() { 
 	connect();

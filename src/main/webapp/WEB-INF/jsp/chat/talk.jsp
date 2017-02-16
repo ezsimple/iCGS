@@ -32,7 +32,7 @@
                     <div class="input-group">
                     	<form class="form-inline">
                         	<span class="input-group-btn">
-                        	<input id="name" type="text" class="form-control input-sm" placeholder="" />
+                        	<input id="mesg" type="text" class="form-control input-sm" placeholder="" />
                             	<button class="btn btn-warning btn-sm" id="send" >보내기</button>
                         	</span>
                     	</form>

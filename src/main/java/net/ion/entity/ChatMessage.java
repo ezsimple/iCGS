@@ -1,22 +1,31 @@
 package net.ion.entity;
 
+import java.util.Date;
+
 public class ChatMessage {
 	
-    private String name;
+    private String mesg;
+    private Date reqTime;
 
     @SuppressWarnings("unused")
 	private ChatMessage() { }
 
-    public ChatMessage(String name) {
-        this.name = name;
+    public ChatMessage(String mesg) {
+        this.mesg = mesg;
+    }
+    
+    public ChatMessage setReqtime(Date reqTime) {
+    	this.reqTime = reqTime;
+    	return this;
     }
 
-    public String getName() {
-        return name;
+    public String getMesg() {
+        return this.mesg;
+    }
+    
+    public Date getReqtime() {
+    	return this.reqTime;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
 
 }
