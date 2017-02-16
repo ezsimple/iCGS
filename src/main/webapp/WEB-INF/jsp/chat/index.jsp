@@ -4,11 +4,11 @@
 <head>
     <title>demo</title>
     <link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/main.css" rel="stylesheet">
+    <link href="/assets/css/main.css" rel="stylesheet">
     <script src="/webjars/jquery/jquery.min.js"></script>
     <script src="/webjars/sockjs-client/sockjs.min.js"></script>
     <script src="/webjars/stomp-websocket/stomp.min.js"></script>
-    <script src="/app.js?_=6"></script>
+    <script src="/assets/js/app.js?_=6"></script>
 </head>
 <body>
 <noscript>
