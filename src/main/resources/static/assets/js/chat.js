@@ -43,11 +43,11 @@ function sendMesg() {
 function toBottom() {
 	let v = $('#conversations-body').get(0).scrollHeight;
 	$('#conversations-body').animate({scrollTop: v}, 300);
-}
-
-function cleanInput() {
+	
+	// clearInput
 	$('#mesg').val('');
 }
+
 
 function showGreeting(responseMesg) {
 	let req = responseMesg.req;
@@ -55,7 +55,7 @@ function showGreeting(responseMesg) {
 	let res = responseMesg.res;
 	let resTime = responseMesg.resTime;
 
-	$("#conversations").attr('display','inline');
+	// $("#conversations").attr('display','inline');
 	$("#conversations")
 		.append("<li class='left clearfix'>")
 		.append("<span class='chat-img pull-left'>")
@@ -83,10 +83,10 @@ function showGreeting(responseMesg) {
 		.append("<p>"+res+"</p>")
 		.append("</div>")
 		.append("</li>");
-	$("#conversations").attr('display','inline-block');
+
+	// $("#conversations").attr('display','inline-block');
 
 	toBottom();
-	clearInput();
 }
 
 
