@@ -2,25 +2,27 @@ var stompClient = null;
 var id = "userid";
 
 function setConnected(connected) {
-    $("#connect").prop("disabled", connected);
-    $("#disconnect").prop("disabled", !connected);
+    // $("#connect").prop("disabled", connected);
+    // $("#disconnect").prop("disabled", !connected);
     if (connected) {
         $("#conversation").show();
+        return;
     }
-    else {
-        $("#conversation").hide();
-    }
-    $("#conversations").html("");
+	$("#conversation").hide();
+    // $("#conversations").html("");
+}
+
+function getAll(page) {
+    // stompClient.send("/chat/hello/"+id+"/list/"+page,{},"");
 }
 
 function connect() {
     var socket = new SockJS('/broker-websocket');
     stompClient = Stomp.over(socket);
     stompClient.connect({}, function (frame) {
-        // setConnected(true);
-        $("#conversation").show();
+        setConnected(true);
         console.log('Connected: ' + frame);
-        stompClient.subscribe('/topic/greetings', function (callback) {
+        stompClient.subscribe('/topic/'+id, function (callback) {
             showGreeting(JSON.parse(callback.body));
         });
     });
@@ -38,12 +40,12 @@ function sendMesg() {
 	let v = $("#mesg").val();
 	console.log('sendMesg' + v);
     stompClient.send("/chat/hello/"+id, {}, JSON.stringify({'mesg': $("#mesg").val()}));
+    toBottom();
 }
 
 function toBottom() {
 	let v = $('#conversations-body').get(0).scrollHeight;
 	$('#conversations-body').animate({scrollTop: v}, 300);
-	
 	// clearInput
 	$('#mesg').val('');
 }
@@ -83,10 +85,7 @@ function showGreeting(responseMesg) {
 		.append("<p>"+res+"</p>")
 		.append("</div>")
 		.append("</li>");
-
 	// $("#conversations").attr('display','inline-block');
-
-	toBottom();
 }
 
 
@@ -98,6 +97,18 @@ $(function () {
     $( "#disconnect" ).click(function() { disconnect(); });
     $( "#send" ).click(function() { sendMesg(); });
 });
+
+function refreshMessages(messages) {
+    $("#conversation").html("");
+    $.each(messages.reverse(), function(i, message) {
+        // showGreeting(JSON.parse(message));
+        console.log(message);
+    });
+}
+
 $(document).ready(function() { 
 	connect();
+	$.get("/hello/"+id+"/list/0",function(messages) {
+		refreshMessages(messages)
+	})
 });

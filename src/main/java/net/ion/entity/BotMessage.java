@@ -13,12 +13,19 @@ public class BotMessage {
     private Date reqTime;
     private Date resTime;
 
-    @SuppressWarnings("unused")
-    private BotMessage() { }
-
     public BotMessage(String req, String res) {
         this.req = req;
         this.res = res;
+    }
+
+    public BotMessage setRequest(String req) {
+    	this.req = req;
+    	return this;
+    }
+
+    public BotMessage setResponse(String res) {
+    	this.res = res;
+    	return this;
     }
     
     public BotMessage setReqtime(Date reqTime) {
