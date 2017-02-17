@@ -41,33 +41,17 @@ public class ChatController {
 	@Autowired
 	MessageService msgSvc;
 
-    public List<BotMessage> history(String path) {
+    public List<Message> history(String path) {
 		List<Message> messages = (List<Message>) msgSvc.findByPath(path);
-		List<BotMessage> list = new ArrayList();
-		for(Message m : messages) {
-			BotMessage res = new BotMessage("", "");
-			if("bot".equals(m.getWho())) res.setResponse(m.getMessage()).setRestime(m.getDate());
-			else res.setRequest(m.getMessage()).setReqtime(m.getDate());
-			list.add(res);
-		}
-		return list;
+		return messages;
     }
 
     @RequestMapping(value="/hello/{who}/list/{page}", method = RequestMethod.GET)
     public HttpEntity historyWith(@PathVariable String who ,@PathVariable String page) throws Exception {
     	String path = "/hello/"+who;
-    	List<BotMessage> chattingList = this.history(path);
-		return new ResponseEntity(chattingList, HttpStatus.OK);
+		return new ResponseEntity(this.history(path), HttpStatus.OK);
     }
     
-    @RequestMapping("/{who}/list/{page}")
-    public String historyWith(@PathVariable String who
-    	,@PageableDefault(direction = Direction.DESC, size = 50) Pageable page) {
-    	String path = "/hello/"+who;
-		return "index";
-    }
-    
-	
     @MessageMapping("/hello/{who}")
     @SendTo("/topic/{who}")
     public BotMessage talkWith(@DestinationVariable String who

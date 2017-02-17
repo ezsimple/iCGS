@@ -40,24 +40,15 @@ function sendMesg() {
 	let v = $("#mesg").val();
 	console.log('sendMesg' + v);
     stompClient.send("/chat/hello/"+id, {}, JSON.stringify({'mesg': $("#mesg").val()}));
-    toBottom();
 }
 
 function toBottom() {
 	let v = $('#conversations-body').get(0).scrollHeight;
 	$('#conversations-body').animate({scrollTop: v}, 300);
-	// clearInput
 	$('#mesg').val('');
 }
 
-
-function showGreeting(responseMesg) {
-	let req = responseMesg.req;
-	let reqTime = responseMesg.reqTime;
-	let res = responseMesg.res;
-	let resTime = responseMesg.resTime;
-
-	// $("#conversations").attr('display','inline');
+function addUserMessage(req, reqTime) {
 	$("#conversations")
 		.append("<li class='left clearfix'>")
 		.append("<span class='chat-img pull-left'>")
@@ -71,7 +62,9 @@ function showGreeting(responseMesg) {
 		.append("<p>"+req+"</p>")
 		.append("</div>")
 		.append("</li>");
+}
 
+function addBotMessage(res, resTime) {
 	$("#conversations")
 		.append("<li class='right clearfix'>")
 		.append("<span class='chat-img pull-right'>")
@@ -85,9 +78,18 @@ function showGreeting(responseMesg) {
 		.append("<p>"+res+"</p>")
 		.append("</div>")
 		.append("</li>");
-	// $("#conversations").attr('display','inline-block');
 }
 
+function showGreeting(responseMesg) {
+	let req = responseMesg.req;
+	let reqTime = responseMesg.reqTime;
+	let res = responseMesg.res;
+	let resTime = responseMesg.resTime;
+
+	addUserMessage(req, reqTime);
+	addBotMessage(res, resTime);
+	toBottom();
+}
 
 $(function () {
     $("form").on('submit', function (e) {
@@ -100,15 +102,22 @@ $(function () {
 
 function refreshMessages(messages) {
     $("#conversation").html("");
-    $.each(messages.reverse(), function(i, message) {
-        // showGreeting(JSON.parse(message));
-        console.log(message);
+    $.each(messages, function(i, m) {
+    	let who = m.who;
+    	let text = m.message;
+    	let cdate = m.date;
+    	if(who == 'bot') {
+    		addBotMessage(text, cdate);
+    		return true;
+    	}
+    	addUserMessage(text, cdate);
     });
 }
 
 $(document).ready(function() { 
 	connect();
 	$.get("/hello/"+id+"/list/0",function(messages) {
-		refreshMessages(messages)
+		refreshMessages(messages);
 	})
+	setTimeout("toBottom()", 1000);
 });
