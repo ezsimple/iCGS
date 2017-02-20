@@ -19,8 +19,8 @@ public class SaveMessageService {
 		return dao.save(msg);
 	}
 	
-	public Iterable<SaveMessage> findByPath(String path) {
-		return dao.findByPath(path);
+	public Page<SaveMessage> findByPath(String path, Pageable pageable) {
+		return dao.findByPath(path, pageable);
 	}
 
 }

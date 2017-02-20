@@ -5,6 +5,9 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,15 +37,16 @@ public class ChatController {
 	@Autowired
 	SaveMessageService msgSvc;
 
-    public List<SaveMessage> history(String path) {
-		List<SaveMessage> messages = (List<SaveMessage>) msgSvc.findByPath(path);
-		return messages;
+    public List<SaveMessage> history(String path, Pageable pageable) {
+    	Page<SaveMessage> page = msgSvc.findByPath(path, pageable);
+    	return page.getContent();
     }
 
     @RequestMapping(value="/hello/{who}/list/{page}", method = RequestMethod.GET)
-    public HttpEntity historyWith(@PathVariable String who ,@PathVariable String page) throws Exception {
+    public HttpEntity historyWith(@PathVariable String who 
+    		,@PageableDefault(size = 50) Pageable pageable) throws Exception {
     	String path = "/hello/"+who;
-		return new ResponseEntity(this.history(path), HttpStatus.OK);
+		return new ResponseEntity(this.history(path, pageable), HttpStatus.OK);
     }
 
     @MessageMapping("/hello/{who}")
