@@ -6,20 +6,20 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import net.ion.dao.MessageRepository;
-import net.ion.entity.Message;
+import net.ion.entity.SaveMessage;
 
 @Service
-public class MessageService {
+public class SaveMessageService {
 	
 	@Autowired 
 	private MessageRepository dao;
 	
-	public Message save(final String who,final String message, final String path) {
-		Message msg = new Message().create(who, message, path);
+	public SaveMessage save(final String who,final String message, final String path) {
+		SaveMessage msg = new SaveMessage().create(who, message, path);
 		return dao.save(msg);
 	}
 	
-	public Iterable<Message> findByPath(String path) {
+	public Iterable<SaveMessage> findByPath(String path) {
 		return dao.findByPath(path);
 	}
 

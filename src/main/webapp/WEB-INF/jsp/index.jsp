@@ -8,6 +8,6 @@
 <body>
 ion Chatting Gateway Service 
 <hr>
-<div><a href="/chat/index.do">go</a></div>
+<div><a href="/chat/with.do">go</a></div>
 </body>
 </html>
