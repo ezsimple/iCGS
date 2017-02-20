@@ -43,7 +43,7 @@ function sendMesg() {
 }
 
 function toBottom() {
-	let v = $('#conversations-body').get(0).scrollHeight;
+	let v = $('#conversations-body').get(0).scrollHeight + 200;
 	$('#conversations-body').animate({scrollTop: v}, 200);
 	$('#text').val('');
 }

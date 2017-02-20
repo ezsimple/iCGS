@@ -2,6 +2,7 @@ package net.ion.controller;
 
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,7 +61,10 @@ public class ChatController {
     	String id;
     	String path = "/hello/"+who;
 
-    	text = mesg.getText();
+    	text = StringUtils.trim(mesg.getText());
+		if (StringUtils.isEmpty(text))
+			return null;
+
     	saved = msgSvc.save(who,text,path);
 		id = saved.getId();
 		BackController.sendBack("/topic/"+who, new BackMessage(id,who,text));
