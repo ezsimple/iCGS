@@ -37,7 +37,7 @@ public class ChatController {
 	@Autowired
 	SaveMessageService msgSvc;
 
-    public List<SaveMessage> history(String path, Pageable pageable) {
+    private List<SaveMessage> history(String path, Pageable pageable) {
     	Page<SaveMessage> page = msgSvc.findByPath(path, pageable);
     	return page.getContent();
     }

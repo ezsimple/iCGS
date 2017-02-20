@@ -102,7 +102,7 @@ $(function () {
     $( "#send" ).click(function() { sendMesg(); });
 });
 
-function refreshMessages(messages) {
+function refreshMessages(messages, timeout) {
     $("#conversation").html("");
     $.each(messages, function(i, m) {
     	// console.log(m);
@@ -115,12 +115,12 @@ function refreshMessages(messages) {
     	}
     	addUserMessage(text, createDate);
     });
+    timeout("toBottom()",100);
 }
 
 $(document).ready(function() { 
 	connect();
 	$.get("/hello/"+id+"/list/0",function(messages) {
-		refreshMessages(messages);
+		refreshMessages(messages, setTimeout);
 	})
-	setTimeout("toBottom()", 1000);
 });
