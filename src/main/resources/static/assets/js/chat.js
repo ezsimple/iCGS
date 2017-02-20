@@ -37,18 +37,18 @@ function disconnect() {
 }
 
 function sendMesg() {
-	let v = $("#mesg").val();
-	console.log('sendMesg' + v);
-    stompClient.send("/chat/hello/"+id, {}, JSON.stringify({'mesg': $("#mesg").val()}));
+	let v = $("#text").val();
+	// console.log('sendMesg : ' + v);
+    stompClient.send("/chat/hello/"+id, {}, JSON.stringify({'text': v}));
 }
 
 function toBottom() {
 	let v = $('#conversations-body').get(0).scrollHeight;
 	$('#conversations-body').animate({scrollTop: v}, 300);
-	$('#mesg').val('');
+	$('#text').val('');
 }
 
-function addUserMessage(req, reqTime) {
+function addUserMessage(text, createDate) {
 	$("#conversations")
 		.append("<li class='left clearfix'>")
 		.append("<span class='chat-img pull-left'>")
@@ -56,15 +56,15 @@ function addUserMessage(req, reqTime) {
 		.append("</span>")
 		.append("<div class='chat-body clearfix'>")
 		.append("<div class='header'>")
-		.append("<small class='pull-right text-muted'><span class='glyphicon glyphicon-time'></span>"+reqTime+"</small>")
+		.append("<small class='pull-right text-muted'><span class='glyphicon glyphicon-time'></span>"+createDate+"</small>")
 		.append("<strong class='primary-font'>Question</strong>") 
 		.append("</div>")
-		.append("<p>"+req+"</p>")
+		.append("<p>"+text+"</p>")
 		.append("</div>")
 		.append("</li>");
 }
 
-function addBotMessage(res, resTime) {
+function addResponseMessage(text, createDate) {
 	$("#conversations")
 		.append("<li class='right clearfix'>")
 		.append("<span class='chat-img pull-right'>")
@@ -72,22 +72,24 @@ function addBotMessage(res, resTime) {
 		.append("</span>")
 		.append("<div class='chat-body clearfix'>")
 		.append("<div class='header'>")
-		.append("<small class=' text-muted'><span class='glyphicon glyphicon-time'></span>"+resTime+"</small>")
+		.append("<small class=' text-muted'><span class='glyphicon glyphicon-time'></span>"+createDate+"</small>")
 		.append("<strong class='pull-right primary-font'>Answer</strong>")
 		.append("</div>")
-		.append("<p>"+res+"</p>")
+		.append("<p>"+text+"</p>")
 		.append("</div>")
 		.append("</li>");
 }
 
-function showGreeting(responseMesg) {
-	let req = responseMesg.req;
-	let reqTime = responseMesg.reqTime;
-	let res = responseMesg.res;
-	let resTime = responseMesg.resTime;
+function showGreeting(backMessage) {
+	let who = backMessage.who;
+	let text = backMessage.text;
+	let createDate = backMessage.createDate;
 
-	addUserMessage(req, reqTime);
-	addBotMessage(res, resTime);
+	if (id == who)
+		addUserMessage(text, createDate);
+	else
+		addResponseMessage(text, createDate);
+
 	toBottom();
 }
 
@@ -103,14 +105,15 @@ $(function () {
 function refreshMessages(messages) {
     $("#conversation").html("");
     $.each(messages, function(i, m) {
+    	// console.log(m);
     	let who = m.who;
-    	let text = m.message;
-    	let cdate = m.date;
+    	let text = m.text;
+    	let createDate = m.createDate;
     	if(who == 'bot') {
-    		addBotMessage(text, cdate);
+    		addResponseMessage(text, createDate);
     		return true;
     	}
-    	addUserMessage(text, cdate);
+    	addUserMessage(text, createDate);
     });
 }
 

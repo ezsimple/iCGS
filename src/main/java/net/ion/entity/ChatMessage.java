@@ -1,31 +1,16 @@
 package net.ion.entity;
 
-import java.util.Date;
+import lombok.Data;
 
+@Data
 public class ChatMessage {
 	
-    private String mesg;
-    private Date reqTime;
+    private String text;
 
-    @SuppressWarnings("unused")
 	private ChatMessage() { }
 
-    public ChatMessage(String mesg) {
-        this.mesg = mesg;
+    public ChatMessage(String text) {
+        this.text = text;
     }
     
-    public ChatMessage setReqtime(Date reqTime) {
-    	this.reqTime = reqTime;
-    	return this;
-    }
-
-    public String getMesg() {
-        return this.mesg;
-    }
-    
-    public Date getReqtime() {
-    	return this.reqTime;
-    }
-
-
 }
