@@ -7,6 +7,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
@@ -44,7 +45,8 @@ public class ChatController {
 
     @RequestMapping(value="/hello/{who}/list/{page}", method = RequestMethod.GET)
     public HttpEntity historyWith(@PathVariable String who 
-    		,@PageableDefault(size = 50) Pageable pageable) throws Exception {
+    		,@PageableDefault(sort = "createDate" ,direction = Direction.ASC ,size = 50) 
+    		Pageable pageable) throws Exception {
     	String path = "/hello/"+who;
 		return new ResponseEntity(this.history(path, pageable), HttpStatus.OK);
     }

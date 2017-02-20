@@ -44,7 +44,7 @@ function sendMesg() {
 
 function toBottom() {
 	let v = $('#conversations-body').get(0).scrollHeight;
-	$('#conversations-body').animate({scrollTop: v}, 300);
+	$('#conversations-body').animate({scrollTop: v}, 200);
 	$('#text').val('');
 }
 
@@ -115,7 +115,7 @@ function refreshMessages(messages, timeout) {
     	}
     	addUserMessage(text, createDate);
     });
-    timeout("toBottom()",100);
+    timeout("toBottom()",500);
 }
 
 $(document).ready(function() { 
