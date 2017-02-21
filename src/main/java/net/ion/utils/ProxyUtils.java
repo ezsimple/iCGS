@@ -33,10 +33,7 @@ public class ProxyUtils {
 		if (parameterMap != null && !parameterMap.isEmpty()) {
 			for (String key : parameterMap.keySet()) {
 				String val = parameterMap.get(key).toString();
-				if(val.contains("?"))
-					val = StringUtils.replace(val, "?", ""); // 심심이가 "?"있는 질문에 대해 응답을 못하고 있음.
 				val =  URLEncoder.encode(val,"UTF-8");
-				logger.info(key+"="+val);
 				buf.append(key+"="+val);
 				buf.append("&");
 			}

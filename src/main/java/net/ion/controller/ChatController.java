@@ -71,6 +71,8 @@ public class ChatController {
 		
 		who = "bot";
 		text = simSvc.exec(mesg.getText());
+		if(text == null)
+			return null;
 		saved = msgSvc.save(who,text,path);
 		id = saved.getId();
         return new BackMessage(id,who,text);
