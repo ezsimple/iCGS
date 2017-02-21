@@ -61,7 +61,6 @@ public class ChatController {
     	String id;
     	String path = "/hello/"+who;
 
-    	logger.info(mesg.getText());
     	text = StringUtils.trim(mesg.getText());
 		if (StringUtils.isEmpty(text))
 			return null;

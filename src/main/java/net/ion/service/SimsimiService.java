@@ -1,6 +1,5 @@
 package net.ion.service;
 
-import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,7 +26,7 @@ public class SimsimiService {
 		param.put("key", key);
 		param.put("ft", "1.0");
 		param.put("lc", "ko");
-		param.put("text", URLEncoder.encode(mesg, "UTF-8"));
+		param.put("text", mesg);
 		String res = ProxyUtils.getText(url, param, "response");
 		logger.debug(res);
 		return res;
