@@ -19,6 +19,8 @@ function getAll(page) {
 function connect() {
     var socket = new SockJS('/broker-websocket');
     stompClient = Stomp.over(socket);
+    stompClient.heartbeat.outgoing = 3000; // client will send heartbeat every ms
+    stompClient.heartbeat.incomming = 0 // client does not want to receive heartbeats
     stompClient.connect({}, function (frame) {
         setConnected(true);
         console.log('Connected: ' + frame);
@@ -26,6 +28,9 @@ function connect() {
             showGreeting(JSON.parse(callback.body));
         });
     });
+    socket.onclose = function() {
+    	disconnect();
+    }
 }
 
 function disconnect() {
