@@ -108,6 +108,7 @@ $(function () {
 });
 
 function refreshMessages(messages, timeout) {
+	let h = 0;
     $("#conversation").html("");
     $.each(messages, function(i, m) {
     	// console.log(m);
@@ -120,7 +121,7 @@ function refreshMessages(messages, timeout) {
     	}
     	addUserMessage(text, createDate);
     });
-    timeout("toBottom()",500);
+    timeout("toBottom()",1000);
 }
 
 $(document).ready(function() { 

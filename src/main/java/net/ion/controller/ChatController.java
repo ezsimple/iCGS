@@ -32,12 +32,15 @@ public class ChatController {
 	
 	protected Log logger = LogFactory.getLog(this.getClass());
 	
-	
 	@Autowired
 	SimsimiService simSvc;
 
 	@Autowired
 	SaveMessageService msgSvc;
+	
+	private String mkPath(final String who) {
+		return "/hello/"+who; // 특수기호인 : 는 사용할 수 없다.
+	}
 
     private List<SaveMessage> history(String path, Pageable pageable) {
     	Page<SaveMessage> page = msgSvc.findByPath(path, pageable);
@@ -48,7 +51,7 @@ public class ChatController {
     public HttpEntity historyWith(@PathVariable String who 
     		,@PageableDefault(sort = "createDate" ,direction = Direction.ASC ,size = 50) 
     		Pageable pageable) throws Exception {
-    	String path = "/hello/"+who;
+    	String path = mkPath(who);
 		return new ResponseEntity(this.history(path, pageable), HttpStatus.OK);
     }
 
@@ -59,7 +62,7 @@ public class ChatController {
     	String text;
     	SaveMessage saved;
     	String id;
-    	String path = "/hello/"+who;
+    	String path = mkPath(who);
 
     	text = StringUtils.trim(mesg.getText());
 		if (StringUtils.isEmpty(text))
