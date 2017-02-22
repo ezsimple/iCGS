@@ -115,11 +115,11 @@ function refreshMessages(messages, timeout) {
     	let who = m.who;
     	let text = m.text;
     	let createDate = m.createDate;
-    	if(who == 'bot') {
-    		addResponseMessage(text, createDate);
+    	if(id == who) {
+			addUserMessage(text, createDate);
     		return true;
     	}
-    	addUserMessage(text, createDate);
+    	addResponseMessage(text, createDate);
     });
     timeout("toBottom()",1000);
 }
