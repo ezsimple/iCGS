@@ -34,10 +34,3 @@
 	</div>
 </body>
 </html>
-
-<script language="javascript"> 
-
-   function do1(){ $.post("/chat/with.do", { username: "홍두깨" } ); }
-   function do2(){ $.post("/chat/with.do", { username: "홍당무" } ); }
-
-</script>
