@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<c:set var="_ts" value="<%= System.currentTimeMillis() %>" />
+<c:set var="_ts" value='<%= System.currentTimeMillis() %>' />
+<c:set var="who" value='<%= request.getParameter("username") %>' />
 <!DOCTYPE html>
 <html>
 <head>
@@ -19,7 +20,7 @@
             <div class="panel panel-primary">
                 <div class="panel-heading">
                     <span class="glyphicon glyphicon-comment"></span> 
-                    채팅서비스
+                    채팅서비스 (${who })
                     <form class="form-inline">
                     	<div class="btn-group pull-right"></div>
                     </form>
@@ -44,3 +45,13 @@
 </div>
 </body>
 </html>
+<script>
+$(document).ready(function() { 
+    var who = '<c:out value="${who }" />'; 
+	setId(who);
+	$.get("/hello/"+who+"/list/0",function(messages) {
+		refreshMessages(messages, setTimeout);
+	})
+	connect();
+});
+</script>

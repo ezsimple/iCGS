@@ -1,5 +1,7 @@
 var stompClient = null;
-var id = "userid";
+var id = null;
+
+function setId(who) { id = who; }
 
 function setConnected(connected) {
     // $("#connect").prop("disabled", connected);
@@ -124,9 +126,9 @@ function refreshMessages(messages, timeout) {
     timeout("toBottom()",1000);
 }
 
-$(document).ready(function() { 
-	connect();
-	$.get("/hello/"+id+"/list/0",function(messages) {
-		refreshMessages(messages, setTimeout);
-	})
-});
+// $(document).ready(function() { 
+//	connect();
+//	$.get("/hello/"+id+"/list/0",function(messages) {
+//		refreshMessages(messages, setTimeout);
+//	})
+// });
