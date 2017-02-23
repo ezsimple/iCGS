@@ -13,6 +13,7 @@ server:
         whitelabel:
             enabled: false
 
+# Embedding ElasticSearch Settings
 spring.data.elasticsearch:
   cluster-name: cluster-icgs
   cluster-nodes: 127.0.0.1:9300
@@ -26,12 +27,12 @@ spring.data.elasticsearch:
     node.master: true
     node.data: true
 
-    index.number_of_shards: 3
-    index.number_of_replicas: 3
+    index.number_of_shards: 1
+    index.number_of_replicas: 0
     index.mapper.dynamic: true
     index.refresh_interval: "1s"
     action.auto_create_index: true
-    action.disable_shutdown: true
+    action.disable_shutdown: false
 
     network.host: localhost
     network.bind_host: 0.0.0.0
@@ -50,5 +51,3 @@ spring.data.elasticsearch:
 
     transport.tcp.connect_timeout: 120s            
     bootstrap.mlockall: true
-
-    
