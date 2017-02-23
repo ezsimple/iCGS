@@ -14,7 +14,7 @@ function setConnected(connected) {
 }
 
 function connect() {
-    var socket = new SockJS('/broker-websocket');
+    var socket = new SockJS('/endpoint');
     stompClient = Stomp.over(socket);
     stompClient.connect({}, function (frame) {
         setConnected(true);

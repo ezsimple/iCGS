@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.annotation.SubscribeMapping;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -61,7 +62,7 @@ public class ChatController {
     		, ChatMessage mesg) throws Exception {
     	String text;
     	SaveMessage saved;
-    	String id;
+    	String id = "";
     	String path = mkPath(who);
 
     	text = StringUtils.trim(mesg.getText());
@@ -80,5 +81,21 @@ public class ChatController {
 		id = saved.getId();
         return new BackMessage(id,who,text);
     }
+    
+    @SubscribeMapping("/advice/{who}") // 이때 who의 값은 고객명이 된다.
+    public void adviceTo(@DestinationVariable String who, ChatMessage mesg) {
+    	String text;
+    	SaveMessage saved;
+    	String id = "";
+    	String path = mkPath(who);
 
+    	text = StringUtils.trim(mesg.getText());
+		if (StringUtils.isEmpty(text))
+			return;
+
+		String oper = "oper";
+    	saved = msgSvc.save(oper,text,path);
+		id = saved.getId();
+		BackController.sendBack("/topic/"+who, new BackMessage(id,oper,text));
+    }
 }

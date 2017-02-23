@@ -7,8 +7,8 @@
 <title>Error Page</title>
 </head>
 <body>
-<h1>Error Page</h1>
-<p>Application has encountered an error.</p>
+<h1>오류 페이지</h1>
+<p>죄송합니다. 곧 조치하도록 하겠습니다.</p>
 <!-- 
 Failed URL: ${url} 
 Exception: ${exception.message} 

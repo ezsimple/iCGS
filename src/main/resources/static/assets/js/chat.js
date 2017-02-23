@@ -1,7 +1,18 @@
 var stompClient = null;
-var id = null;
+var username = null;
+var who = null;
+var destination = null;
 
-function setId(who) { id = who; }
+function setUsername(who) { username = who; }
+function setWho(_who) { who = _who; }
+function setDestination(dest) { destination = dest; }
+function getAnswerName(who) {
+	switch(who) {
+	case 'bot': return "Simsimi";
+	case 'oper' : return "Operator";
+	}
+	return "Unknown";
+}
 
 function setConnected(connected) {
     // $("#connect").prop("disabled", connected);
@@ -15,18 +26,18 @@ function setConnected(connected) {
 }
 
 function getAll(page) {
-    // stompClient.send("/chat/hello/"+id+"/list/"+page,{},"");
+    // stompClient.send("/chat"+"/"+destination+"/"+user+"/list/"+page,{},"");
 }
 
 function connect() {
-    var socket = new SockJS('/broker-websocket');
+    var socket = new SockJS('/endpoint');
     stompClient = Stomp.over(socket);
     stompClient.heartbeat.outgoing = 3000; // client will send heartbeat every ms
     stompClient.heartbeat.incomming = 0 // client does not want to receive heartbeats
     stompClient.connect({}, function (frame) {
         setConnected(true);
         console.log('Connected: ' + frame);
-        stompClient.subscribe('/topic/'+id, function (callback) {
+        stompClient.subscribe('/topic/'+username, function (callback) {
             showGreeting(JSON.parse(callback.body));
         });
     });
@@ -46,7 +57,7 @@ function disconnect() {
 function sendMesg() {
 	let v = $("#text").val();
 	// console.log('sendMesg : ' + v);
-    stompClient.send("/chat/hello/"+id, {}, JSON.stringify({'text': v}));
+    stompClient.send("/chat"+"/"+destination+"/"+username, {}, JSON.stringify({'text': v}));
 }
 
 function toBottom() {
@@ -55,32 +66,32 @@ function toBottom() {
 	$('#text').val('');
 }
 
-function addUserMessage(text, createDate) {
+function addUserMessage(who, text, createDate) {
 	$("#conversations")
 		.append("<li class='left clearfix'>")
 		.append("<span class='chat-img pull-left'>")
-		.append("<img src='http://placehold.it/50/55C1E7/fff&amp;text=YOU' alt='User Avatar' class='img-circle'>")
+		.append("<img src='http://placehold.it/50/55C1E7/fff&amp;text=ASK' alt='User Avatar' class='img-circle'>")
 		.append("</span>")
 		.append("<div class='chat-body clearfix'>")
 		.append("<div class='header'>")
 		.append("<small class='pull-right text-muted'><span class='glyphicon glyphicon-time'></span>"+createDate+"</small>")
-		.append("<strong class='primary-font'>Question</strong>") 
+		.append("<strong class='primary-font'>"+who+"</strong>") 
 		.append("</div>")
 		.append("<p>"+text+"</p>")
 		.append("</div>")
 		.append("</li>");
 }
 
-function addResponseMessage(text, createDate) {
+function addResponseMessage(who, text, createDate) {
 	$("#conversations")
 		.append("<li class='right clearfix'>")
 		.append("<span class='chat-img pull-right'>")
-		.append("<img src='http://placehold.it/50/FA6F57/fff&amp;text=BOT' alt='User Avatar' class='img-circle pull-right'>")
+		.append("<img src='http://placehold.it/50/2E8B57/fff&amp;text=ANS' alt='User Avatar' class='img-circle pull-right'>")
 		.append("</span>")
 		.append("<div class='chat-body clearfix'>")
 		.append("<div class='header'>")
 		.append("<small class=' text-muted'><span class='glyphicon glyphicon-time'></span>"+createDate+"</small>")
-		.append("<strong class='pull-right primary-font'>Answer</strong>")
+		.append("<strong class='pull-right primary-font'>"+getAnswerName(who)+"</strong>")
 		.append("</div>")
 		.append("<p>"+text+"</p>")
 		.append("</div>")
@@ -92,10 +103,10 @@ function showGreeting(backMessage) {
 	let text = backMessage.text;
 	let createDate = backMessage.createDate;
 
-	if (id == who)
-		addUserMessage(text, createDate);
+	if (username == who)
+		addUserMessage(who, text, createDate);
 	else
-		addResponseMessage(text, createDate);
+		addResponseMessage(who, text, createDate);
 
 	toBottom();
 }
@@ -117,18 +128,18 @@ function refreshMessages(messages, timeout) {
     	let who = m.who;
     	let text = m.text;
     	let createDate = m.createDate;
-    	if(id == who) {
-			addUserMessage(text, createDate);
+    	if(username == who) {
+			addUserMessage(who, text, createDate);
     		return true;
     	}
-    	addResponseMessage(text, createDate);
+    	addResponseMessage(who, text, createDate);
     });
     timeout("toBottom()",1000);
 }
 
 // $(document).ready(function() { 
 //	connect();
-//	$.get("/hello/"+id+"/list/0",function(messages) {
+//	$.get("/"+destination+"/"+username+"/list/0",function(messages) {
 //		refreshMessages(messages, setTimeout);
 //	})
 // });
