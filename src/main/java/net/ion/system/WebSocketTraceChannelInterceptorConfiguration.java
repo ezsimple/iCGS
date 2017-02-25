@@ -2,6 +2,8 @@ package net.ion.system;
 
 import javax.annotation.PostConstruct;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.actuate.trace.InMemoryTraceRepository;
@@ -13,6 +15,8 @@ import org.springframework.messaging.support.ExecutorSubscribableChannel;
 
 @Configuration
 public class WebSocketTraceChannelInterceptorConfiguration {
+	
+	protected Log logger = LogFactory.getLog(this.getClass());
 
 	@Value("${management.websocket.trace-inbound:true}")
 	private boolean enableTraceInboundChannel;

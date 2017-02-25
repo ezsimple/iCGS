@@ -7,16 +7,16 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Description;
 import org.springframework.web.socket.config.WebSocketMessageBrokerStats;
 
-import net.ion.listener.ConnectionEventListener;
+import net.ion.event.SessionEventListener;
 
 @Configuration
 public class ChatConfiguration {
 	protected Log logger = LogFactory.getLog(this.getClass());
 
 	@Bean
-	@Description("Tracks user presence (join / leave) and broacasts it to all connected users")
-	public ConnectionEventListener connectionEventListener() {
-		return new ConnectionEventListener();
+	@Description("stomp session connected/disconnected detection")
+	public SessionEventListener connectionEventListener() {
+		return new SessionEventListener();
 	}
 
 	@Bean
