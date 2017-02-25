@@ -29,12 +29,14 @@ function getAll(page) {
     // stompClient.send("/chat"+"/"+destination+"/"+user+"/list/"+page,{},"");
 }
 
+
 function connect() {
     var socket = new SockJS('/endpoint');
     stompClient = Stomp.over(socket);
     stompClient.heartbeat.outgoing = 3000; // client will send heartbeat every ms
     stompClient.heartbeat.incomming = 0 // client does not want to receive heartbeats
-    stompClient.connect({}, function (frame) {
+	var headers = {'username': username };
+    stompClient.connect(headers, function (frame) {
         setConnected(true);
         console.log('Connected: ' + frame);
         stompClient.subscribe('/topic/'+username, function (callback) {

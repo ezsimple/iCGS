@@ -22,7 +22,7 @@ spring.data.elasticsearch:
     # Home directory of the embedded Elasticsearch instance. Default to the current working directory.
     # elasticsearch.mapping.config=classpath:/mapping.json
     path.home: target/elastic 
-    path.plugins: classpath:plugins
+    # path.plugins: classpath:plugins # windows error
     node.name: "node-icgs"
     node.master: true
     node.data: true
