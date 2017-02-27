@@ -26,13 +26,13 @@ public class SessionEventListener {
 	private final String SIMP_SESSION_ID = "simpSessionId";
 	private final String NATIVE_HEADERS = "nativeHeaders";
 	private final String USER_NAME = "username";
-	private final String WAITING_ROOM = "/queue/waiting";
+	private final String WAITING_QUEUE = "/queue/waiting";
 
 	@Autowired
     private SimpMessagingTemplate template;
     
     private void notifyEvent(Object evt) {
-        template.convertAndSend(WAITING_ROOM, evt);
+        template.convertAndSend(WAITING_QUEUE, evt);
     }
 
 	@EventListener
