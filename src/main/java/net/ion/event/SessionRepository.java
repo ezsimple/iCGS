@@ -14,7 +14,7 @@ public class SessionRepository {
 	private Map<String, ConnectEvent> activeSessions = new ConcurrentHashMap<>();
 
 	private void log(String prefix,String sessionId) {
-		logger.debug(prefix+" : "+ get(sessionId).getUsername()+":"+sessionId);
+		logger.debug(prefix+" : "+ get(sessionId).getUsername());
 	}
 
 	public void add(String sessionId, ConnectEvent event) {
@@ -23,7 +23,7 @@ public class SessionRepository {
 	}
 
 	public void remove(String sessionId) {
-		log("remove", sessionId);
+		log("del", sessionId);
 		activeSessions.remove(sessionId);
 	}
 
