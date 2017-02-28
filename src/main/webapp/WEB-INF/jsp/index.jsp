@@ -10,12 +10,13 @@
     <script src="/webjars/jquery/jquery.min.js"></script>
     <script src="/webjars/sockjs-client/sockjs.min.js"></script>
     <script src="/webjars/stomp-websocket/stomp.min.js"></script>
+    <script src="/assets/js/oper.js?_=${_ts }"></script>
 </head>
 <body>
 	<div class="row">
-		<div class="col-md-6 col-lg-6">
+		<div class="col-md-4 col-lg-4">
 			<div class="alert alert-block alert-warning">
-				<h4 class="alert-heading">i-on Chatting Gateway Service</h4>
+				<h4 class="alert-heading"><b>i-on Chatting Gateway Service</b></h4>
 			</div>
 		</div>
 	</div>
@@ -41,7 +42,24 @@
 		</div>
 	</div>
 	<div>
+		[forbidden]
 		<a href="/chat/with.do">채팅(GET 방식)</a>
+	</div>
+	<div class="row">
+		<div class="col-md-4 col-lg-4">
+			<div class="alert-danger">
+			<h6>[대기실]</h6>
+			</div>
+			<div id="waiting"></div>
+		</div>
 	</div>
 </body>
 </html>
+<script>
+$(document).ready(function() { 
+	$.get("/queue/waiting",function(o) {
+		drawInit(o);
+	})
+	connect();
+});
+</script>

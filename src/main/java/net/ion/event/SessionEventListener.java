@@ -12,9 +12,12 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 import org.springframework.messaging.MessageHeaders;
+import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.socket.messaging.SessionConnectEvent;
 import org.springframework.web.socket.messaging.SessionDisconnectEvent;
+
+import net.ion.dao.SessionRepository;
 
 public class SessionEventListener {
 
@@ -26,13 +29,18 @@ public class SessionEventListener {
 	private final String SIMP_SESSION_ID = "simpSessionId";
 	private final String NATIVE_HEADERS = "nativeHeaders";
 	private final String USER_NAME = "username";
-	private final String WAITING_QUEUE = "/queue/waiting";
+	private final String QUEUE_WAITING = "/queue/waiting";
+	private final String ADD = "+";
+	private final String DEL = "-";
 
 	@Autowired
     private SimpMessagingTemplate template;
     
+	// @Autowired
+	// private static SimpMessageSendingOperations template;
+    
     private void notifyEvent(Object evt) {
-        template.convertAndSend(WAITING_QUEUE, evt);
+        template.convertAndSend(QUEUE_WAITING, evt);
     }
 
 	@EventListener
@@ -41,9 +49,10 @@ public class SessionEventListener {
 		String sessionId = (String) headers.get(SIMP_SESSION_ID);
 		Map<String, LinkedList> nativeHeaders = (Map<String, LinkedList>) headers.get(NATIVE_HEADERS);
 		List<String> usernameList = nativeHeaders.get(USER_NAME);
+		if (usernameList == null) return;
 		String username = usernameList.get(0);
 
-		ConnectEvent evt = new ConnectEvent("ADD",username,sessionId);
+		ConnectEvent evt = new ConnectEvent(ADD,username,sessionId);
 		sessionRepository.add(sessionId, evt);
 		notifyEvent(evt);
 
@@ -53,8 +62,11 @@ public class SessionEventListener {
 	private void handleSessionDisconnect(SessionDisconnectEvent event) {
 
 		String sessionId = event.getSessionId();
-		String username = sessionRepository.get(sessionId).getUsername();
-		Object evt = new ConnectEvent("DEL",username,sessionId);
+		ConnectEvent o = sessionRepository.get(sessionId);
+		if (o == null) return;
+		String username = o.getUsername();
+
+		Object evt = new ConnectEvent(DEL,username,sessionId);
 		Optional.ofNullable(sessionRepository.get(sessionId))
 			.ifPresent(x -> {
 				sessionRepository.remove(sessionId); 

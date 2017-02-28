@@ -35,7 +35,7 @@ function connect() {
     stompClient = Stomp.over(socket);
     stompClient.heartbeat.outgoing = 3000; // client will send heartbeat every ms
     stompClient.heartbeat.incomming = 0 // client does not want to receive heartbeats
-	var headers = {'username': username };
+	var headers = {'username': who };
     stompClient.connect(headers, function (frame) {
         setConnected(true);
         console.log('Connected: ' + frame);

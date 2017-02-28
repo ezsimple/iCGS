@@ -19,7 +19,7 @@ public class ConnectEvent {
 		this.time = new Date();
 	}
 	
-	public String getUsername() {
+	public String getUniquename() {
 		return this.username+"@"+this.sessionId;
 	}
 

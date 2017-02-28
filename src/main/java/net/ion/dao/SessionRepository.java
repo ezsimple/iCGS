@@ -1,4 +1,4 @@
-package net.ion.event;
+package net.ion.dao;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -7,6 +7,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Repository;
 
+import net.ion.event.ConnectEvent;
+
 @Repository
 public class SessionRepository {
 	
@@ -14,7 +16,7 @@ public class SessionRepository {
 	private Map<String, ConnectEvent> activeSessions = new ConcurrentHashMap<>();
 
 	private void log(String prefix,String sessionId) {
-		logger.debug(prefix+" : "+ get(sessionId).getUsername());
+		logger.debug(prefix+" : "+ get(sessionId).getUniquename());
 	}
 
 	public void add(String sessionId, ConnectEvent event) {

@@ -1,147 +1,67 @@
-var stompClient = null;
-var username = null;
-var who = null;
-var destination = null;
+var retryCnt = 0;
 
-function setUsername(who) { username = who; }
-function setWho(_who) { who = _who; }
-function setDestination(dest) { destination = dest; }
-function getAnswerName(who) {
-	switch(who) {
-	case 'bot': return "Simsimi";
-	case 'oper' : return "Operator";
+function setConnected(connected) { 
+	if(connected) { 
+        console.log('Connected');
+		retryCnt = 0; 
+		return;
 	}
-	return "Unknown";
+	retryCnt++;
+    console.log('Disconnected [retry : '+retryCnt+']');
 }
-
-function setConnected(connected) {
-    // $("#connect").prop("disabled", connected);
-    // $("#disconnect").prop("disabled", !connected);
-    if (connected) {
-        $("#conversation").show();
-        return;
-    }
-	$("#conversation").hide();
-    // $("#conversations").html("");
-}
-
-function getAll(page) {
-    // stompClient.send("/chat"+"/"+destination+"/"+user+"/list/"+page,{},"");
-}
-
 
 function connect() {
+	var stompClient = null;
     var socket = new SockJS('/endpoint');
     stompClient = Stomp.over(socket);
-    stompClient.heartbeat.outgoing = 3000; // client will send heartbeat every ms
-    stompClient.heartbeat.incomming = 0 // client does not want to receive heartbeats
-	var headers = {'username': username };
+    stompClient.heartbeat.outgoing  = 5000; // client will send heartbeat every ms
+    stompClient.heartbeat.incomming = 5000; // client will receive heartbeat every ms
+	var headers = {};
     stompClient.connect(headers, function (frame) {
         setConnected(true);
-        console.log('Connected: ' + frame);
-        stompClient.subscribe('/topic/'+username, function (callback) {
-            showGreeting(JSON.parse(callback.body));
+        stompClient.subscribe('/queue/waiting', function (callback) {
+            drawEach(JSON.parse(callback.body));
         });
     });
     socket.onclose = function() {
-    	disconnect();
+        setConnected(false);
+    	console.log("retry : "+retryCnt);
+    	setTimeout("connect()",5000); // 재시도
     }
 }
 
-function disconnect() {
-    if (stompClient != null) {
-        stompClient.disconnect();
-    }
-    setConnected(false);
-    console.log("Disconnected");
+function formChat(o) {
+	return "<form action='/chat/advice.do' class='form-inline' method='post' target='_new'>"
+			+"	<input name='who' type='hidden' value='운영자'/>"
+			+"  <input name='username' type='hidden' value='"+o.username+"' />"
+			+"  <button class='btn btn-danger btn-sm'>"+o.username+"</button>"
+			+"</form>";
 }
 
-function sendMesg() {
-	let v = $("#text").val();
-	// console.log('sendMesg : ' + v);
-    stompClient.send("/chat"+"/"+destination+"/"+username, {}, JSON.stringify({'text': v}));
+function add(o) {
+	let username = o.username;
+	let sessionId = o.sessionId;
+	$("#waiting").prepend("<div id='"+sessionId+"'>"+formChat(o)+"</div>");
 }
 
-function toBottom() {
-	let v = $('#conversations-body').get(0).scrollHeight + 200;
-	$('#conversations-body').animate({scrollTop: v}, 200);
-	$('#text').val('');
+function del(o) {
+	let sessionId = o.sessionId;
+	$('#'+sessionId).remove();
 }
 
-function addUserMessage(who, text, createDate) {
-	$("#conversations")
-		.append("<li class='left clearfix'>")
-		.append("<span class='chat-img pull-left'>")
-		.append("<img src='http://placehold.it/50/55C1E7/fff&amp;text=ASK' alt='User Avatar' class='img-circle'>")
-		.append("</span>")
-		.append("<div class='chat-body clearfix'>")
-		.append("<div class='header'>")
-		.append("<small class='pull-right text-muted'><span class='glyphicon glyphicon-time'></span>"+createDate+"</small>")
-		.append("<strong class='primary-font'>"+who+"</strong>") 
-		.append("</div>")
-		.append("<p>"+text+"</p>")
-		.append("</div>")
-		.append("</li>");
+function drawEach(o) {
+	console.log(o);
+	let operator = o.operator;
+	let username = o.username;
+	if (username == '운영자')
+		return;
+	if( "+" == operator) add(o);
+	else if ("-" == operator) del(o);
 }
 
-function addResponseMessage(who, text, createDate) {
-	$("#conversations")
-		.append("<li class='right clearfix'>")
-		.append("<span class='chat-img pull-right'>")
-		.append("<img src='http://placehold.it/50/2E8B57/fff&amp;text=ANS' alt='User Avatar' class='img-circle pull-right'>")
-		.append("</span>")
-		.append("<div class='chat-body clearfix'>")
-		.append("<div class='header'>")
-		.append("<small class=' text-muted'><span class='glyphicon glyphicon-time'></span>"+createDate+"</small>")
-		.append("<strong class='pull-right primary-font'>"+getAnswerName(who)+"</strong>")
-		.append("</div>")
-		.append("<p>"+text+"</p>")
-		.append("</div>")
-		.append("</li>");
-}
-
-function showGreeting(backMessage) {
-	let who = backMessage.who;
-	let text = backMessage.text;
-	let createDate = backMessage.createDate;
-
-	if (username == who)
-		addUserMessage(who, text, createDate);
-	else
-		addResponseMessage(who, text, createDate);
-
-	toBottom();
-}
-
-$(function () {
-    $("form").on('submit', function (e) {
-        e.preventDefault();
+function drawInit(messages) {
+    $("#waiting").html("");
+    $.each(messages, function(i, o) {
+    	drawEach(o);
     });
-    $( "#connect" ).click(function() { connect(); });
-    $( "#disconnect" ).click(function() { disconnect(); });
-    $( "#send" ).click(function() { sendMesg(); });
-});
-
-function refreshMessages(messages, timeout) {
-	let h = 0;
-    $("#conversation").html("");
-    $.each(messages, function(i, m) {
-    	// console.log(m);
-    	let who = m.who;
-    	let text = m.text;
-    	let createDate = m.createDate;
-    	if(username == who) {
-			addUserMessage(who, text, createDate);
-    		return true;
-    	}
-    	addResponseMessage(who, text, createDate);
-    });
-    timeout("toBottom()",1000);
 }
-
-// $(document).ready(function() { 
-//	connect();
-//	$.get("/"+destination+"/"+username+"/list/0",function(messages) {
-//		refreshMessages(messages, setTimeout);
-//	})
-// });

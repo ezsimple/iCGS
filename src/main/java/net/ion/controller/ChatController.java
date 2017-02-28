@@ -2,6 +2,8 @@ package net.ion.controller;
 
 import java.util.List;
 
+import javax.annotation.Resource;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -22,6 +24,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import net.ion.dao.SessionRepository;
 import net.ion.entity.BackMessage;
 import net.ion.entity.ChatMessage;
 import net.ion.entity.SaveMessage;
@@ -38,6 +41,7 @@ public class ChatController {
 
 	@Autowired
 	SaveMessageService msgSvc;
+	
 	
 	private String mkPath(final String who) {
 		return "/hello/"+who; // 특수기호인 : 는 사용할 수 없다.
@@ -82,6 +86,15 @@ public class ChatController {
         return new BackMessage(id,who,text);
     }
     
+	@Resource
+	SessionRepository sessionRepo;
+
+    @RequestMapping(value="/queue/waiting", method = RequestMethod.GET)
+    public HttpEntity waitingList (@PageableDefault(sort = "createDate" ,direction = Direction.ASC ,size = 50) 
+    		Pageable pageable) throws Exception {
+		return new ResponseEntity(sessionRepo.getActiveSessions(), HttpStatus.OK);
+    }
+
     @SubscribeMapping("/advice/{who}") // 이때 who의 값은 고객명이 된다.
     public void adviceTo(@DestinationVariable String who, ChatMessage mesg) {
     	String text;
