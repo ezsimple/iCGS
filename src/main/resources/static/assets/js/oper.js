@@ -35,6 +35,7 @@ function reconnect() {
 	$.get("/queue/waiting",function(o) {
 		drawInit(o);
 	});
+	waitingInit();
 	connect();
 }
 
@@ -72,7 +73,6 @@ function waitingInit() {
 }
 
 function drawInit(messages) {
-	waitingInit();
     $.each(messages, function(i, o) {
     	drawEach(o);
     });
