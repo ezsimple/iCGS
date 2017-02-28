@@ -7,6 +7,7 @@ function setConnected(connected) {
 		return;
 	}
 	retryCnt++;
+	waitingInit();
     console.log('Disconnected [retry : '+retryCnt+']');
 }
 
@@ -26,12 +27,19 @@ function connect() {
     socket.onclose = function() {
         setConnected(false);
     	console.log("retry : "+retryCnt);
-    	setTimeout("connect()",5000); // 재시도
+    	setTimeout("reconnect()",5000); // 재시도
     }
 }
 
+function reconnect() {
+	$.get("/queue/waiting",function(o) {
+		drawInit(o);
+	});
+	connect();
+}
+
 function formChat(o) {
-	return "<form action='/chat/advice.do' class='form-inline' method='post' target='_new'>"
+	return  "<form action='/chat/advice.do' class='form-inline' method='post' target='_new'>"
 			+"	<input name='who' type='hidden' value='운영자'/>"
 			+"  <input name='username' type='hidden' value='"+o.username+"' />"
 			+"  <button class='btn btn-danger btn-sm'>"+o.username+"</button>"
@@ -59,8 +67,12 @@ function drawEach(o) {
 	else if ("-" == operator) del(o);
 }
 
-function drawInit(messages) {
+function waitingInit() {
     $("#waiting").html("");
+}
+
+function drawInit(messages) {
+	waitingInit();
     $.each(messages, function(i, o) {
     	drawEach(o);
     });
