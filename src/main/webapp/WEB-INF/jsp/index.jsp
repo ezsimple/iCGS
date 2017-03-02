@@ -22,7 +22,7 @@
 	</div>
 	<div class="input-group">
 		<div class="form-group has-success">
-			<form action="/chat/with.do" class="form-inline" method="post">
+			<form action="/chat/with.do" class="form-inline" method="post" target="_new">
 				<span class="input-group-btn">
 					<input name="username" type="text" class="form-control input-sm" placeholder="이름을 입력하세요" autocomplete="off" />
 					<button class="btn btn-primary btn-sm" id="send" >문의하기</button>
@@ -32,7 +32,7 @@
 	</div>
 	<div class="input-group">
 		<div class="form-group has-error">
-			<form action="/chat/advice.do" class="form-inline" method="post">
+			<form action="/chat/advice.do" class="form-inline" method="post" target="_new">
 				<span class="input-group-btn">
 					<input name="who" type="hidden" value="운영자"/>
 					<input name="username" type="text" class="form-control input-sm" placeholder="고객명을 입력하세요" autocomplete="off" />
@@ -47,9 +47,7 @@
 	</div>
 	<div class="row">
 		<div class="col-md-4 col-lg-4">
-			<div class="alert-danger">
-			<h6>[대기실]</h6>
-			</div>
+			<div class="alert-danger"><h6>[대기실]</h6></div>
 			<div id="waiting"></div>
 		</div>
 	</div>
