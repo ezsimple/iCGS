@@ -32,8 +32,8 @@
                 <div class="panel-footer">
                     <div class="input-group">
                     	<form class="form-inline">
-                        	<input id="text" type="text" class="form-control form-control-inline input-sm" placeholder="" autocomplete="off" />
                         	<span class="input-group-btn">
+								<input id="text" type="text" class="form-control form-control-inline input-sm" placeholder="" autocomplete="off" />
                             	<button class="btn btn-success btn-sm" id="send" >보내기</button>
                         	</span>
                     	</form>

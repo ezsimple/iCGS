@@ -22,7 +22,7 @@
 	</div>
 	<div class="input-group">
 		<div class="form-group has-success">
-			<form action="/chat/with.do" class="form-inline" method="post" target="_new">
+			<form action="/chat/with.do" class="form-inline" method="post" target="_new1">
 				<span class="input-group-btn">
 					<input name="username" type="text" class="form-control input-sm" placeholder="이름을 입력하세요" autocomplete="off" />
 					<button class="btn btn-primary btn-sm" id="send" >문의하기</button>
