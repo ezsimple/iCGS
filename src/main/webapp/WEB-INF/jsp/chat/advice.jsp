@@ -26,8 +26,9 @@
                     	<div class="btn-group pull-right"></div>
                     </form>
                 </div>
-                <div class="panel-body">
-                    <ul class="chat" id="conversations"></ul>
+                <div class="panel-body" id="conversations-body">
+                    <ul class="chat" id="conversations">
+                    </ul>
                 </div>
                 <div class="panel-footer">
                     <div class="input-group">
