@@ -1,5 +1,6 @@
 package net.ion.controller;
 
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
@@ -25,16 +26,20 @@ public class SearchController {
 	public void list(@PathVariable("who") String who) {
 		String path = "/hello/"+who;
 		Iterable<SaveMessage> list = dao.findByPath(path);
-		for(SaveMessage i : list) {
-			logger.debug(i.getText());
+		SaveMessage obj = null;
+		for(SaveMessage o : list) {
+			obj = o;
+			// logger.debug(o.getText());
 		}
-		String id = "AVqOKAH5Z2PHpYF88oYE";
-		SaveMessage m = dao.findById(id);
-		if(m==null) {
-			logger.debug("m is null");
-			return;
+		
+		// obj is last SaveMessage
+		if (obj != null) {
+			String id = obj.getId();
+			Iterable<SaveMessage> data = dao.findByIdLessThanEqualAndPath(id, path);
+			for(SaveMessage o : data) {
+				logger.debug(o.getText());
+			}
 		}
-		logger.debug(m.getCreateDate());
 
 		
 		

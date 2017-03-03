@@ -11,7 +11,7 @@ import net.ion.entity.SaveMessage;
 public interface MessageRepository extends ElasticsearchRepository<SaveMessage, String> {
 	Page<SaveMessage> findByPath(String path, Pageable pageable);
 	Iterable<SaveMessage> findByPath(String path);
-	SaveMessage findById(String Id);
-	Iterable<SaveMessage> findBycreateDateLessThanAndPath(Date createDate, String path);
-	Iterable<SaveMessage> findBycreateDateGreaterThanAndPath(Date createDate, String path);
+	SaveMessage findById(String id);
+	Iterable<SaveMessage> findByIdLessThanEqualAndPath(String id, String path);
+	Iterable<SaveMessage> findByIdGreaterThanAndPath(String id, String path);
 }
