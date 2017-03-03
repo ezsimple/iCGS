@@ -12,5 +12,5 @@ public interface MessageRepository extends ElasticsearchRepository<SaveMessage, 
 	Iterable<SaveMessage> findByPath(String path, Sort sort);
 	SaveMessage findById(String id);
 	Iterable<SaveMessage> findByIdLessThanEqualAndPath(String id, String path, Sort sort);
-	Iterable<SaveMessage> findByIdGreaterThanAndPath(String id, String path);
+	Iterable<SaveMessage> findByIdGreaterThanAndPath(String id, String path, Sort sort);
 }
