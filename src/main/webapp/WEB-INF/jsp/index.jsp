@@ -22,10 +22,10 @@
 	</div>
 	<div class="input-group">
 		<div class="form-group has-success">
-			<form action="/chat/with.do" class="form-inline" method="post" target="_new1">
+			<form action="/chat/with.do" class="form-inline" method="post" target="_blank">
 				<span class="input-group-btn">
 					<input name="username" type="text" class="form-control input-sm" placeholder="이름을 입력하세요" autocomplete="off" />
-					<button class="btn btn-primary btn-sm" id="send" >문의하기</button>
+					<button class="btn btn-primary btn-sm" id="sendQ" >문의하기</button>
 				</span>
 			</form>
 		</div>
@@ -36,7 +36,7 @@
 				<span class="input-group-btn">
 					<input name="who" type="hidden" value="운영자"/>
 					<input name="username" type="text" class="form-control input-sm" placeholder="고객명을 입력하세요" autocomplete="off" />
-					<button class="btn btn-danger btn-sm" id="send" >응대하기</button>
+					<button class="btn btn-danger btn-sm" id="sendA" >응대하기</button>
 				</span>
 			</form>
 		</div>
