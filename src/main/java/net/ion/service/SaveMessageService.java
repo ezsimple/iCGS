@@ -19,7 +19,7 @@ public class SaveMessageService {
 	private UUIDService svc;
 	
 	public SaveMessage save(final String who,final String message, final String path) {
-		final String id = svc.seqId();
+		final String id = svc.getNextId();
 		SaveMessage msg = new SaveMessage(id, who, message, path);
 		// ==================================================================
 		// 어떻게 _id 와 id의 값을 같게 할 수 있을까? 이 방법밖에는 없는건가?
