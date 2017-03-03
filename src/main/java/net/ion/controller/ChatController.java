@@ -1,5 +1,6 @@
 package net.ion.controller;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -67,6 +68,7 @@ public class ChatController {
     	String text;
     	SaveMessage saved;
     	String id = "";
+    	Date date;
     	String path = mkPath(who);
 
     	text = StringUtils.trim(mesg.getText());
@@ -75,7 +77,8 @@ public class ChatController {
 
     	saved = msgSvc.save(who,text,path);
 		id = saved.getId();
-		BackController.sendBack("/topic/"+who, new BackMessage(id,who,text));
+		date = saved.getCreateDate();
+		BackController.sendBack("/topic/"+who, new BackMessage(id,who,text,date));
 		
 		who = "bot";
 		text = simSvc.exec(mesg.getText());
@@ -83,23 +86,16 @@ public class ChatController {
 			return null;
 		saved = msgSvc.save(who,text,path);
 		id = saved.getId();
-        return new BackMessage(id,who,text);
+		date = saved.getCreateDate();
+        return new BackMessage(id,who,text,date);
     }
     
-	@Resource
-	SessionRepository sessionRepo;
-
-    @RequestMapping(value="/queue/waiting", method = RequestMethod.GET)
-    public HttpEntity waitingList (@PageableDefault(sort = "createDate" ,direction = Direction.ASC ,size = 50) 
-    		Pageable pageable) throws Exception {
-		return new ResponseEntity(sessionRepo.getActiveSessions(), HttpStatus.OK);
-    }
-
     @SubscribeMapping("/advice/{who}") // 이때 who의 값은 고객명이 된다.
     public void adviceTo(@DestinationVariable String who, ChatMessage mesg) {
     	String text;
     	SaveMessage saved;
     	String id = "";
+    	Date date;
     	String path = mkPath(who);
 
     	text = StringUtils.trim(mesg.getText());
@@ -109,6 +105,7 @@ public class ChatController {
 		String oper = "oper";
     	saved = msgSvc.save(oper,text,path);
 		id = saved.getId();
-		BackController.sendBack("/topic/"+who, new BackMessage(id,oper,text));
+		date = saved.getCreateDate();
+		BackController.sendBack("/topic/"+who, new BackMessage(id,oper,text,date));
     }
 }

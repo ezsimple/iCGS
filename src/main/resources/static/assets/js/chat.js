@@ -100,7 +100,12 @@ function addResponseMessage(who, text, createDate) {
 		.append("</li>");
 }
 
+function setLastId(id) {
+	$('#last_id').val(id);
+}
+
 function showGreeting(backMessage) {
+	let id = backMessage.id;
 	let who = backMessage.who;
 	let text = backMessage.text;
 	let createDate = backMessage.createDate;
@@ -109,7 +114,8 @@ function showGreeting(backMessage) {
 		addUserMessage(who, text, createDate);
 	else
 		addResponseMessage(who, text, createDate);
-
+	
+	setLastId(id);
 	toBottom();
 }
 

@@ -12,11 +12,11 @@ public class BackMessage {
     private Date createDate;
 
     private BackMessage() {}
-    public BackMessage(String id, String who, String text) {
+    public BackMessage(String id, String who, String text, Date date) {
     	this.id = id;
         this.who = who;
         this.text = text;
-        this.createDate = new Date();
+        this.createDate = date;
     }
 
 }

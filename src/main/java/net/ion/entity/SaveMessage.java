@@ -18,6 +18,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Document(indexName="chat", type="messages")
 public class SaveMessage {
+
 	@Id 
 	String id; 
 	private String who;

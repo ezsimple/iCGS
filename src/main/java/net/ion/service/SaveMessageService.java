@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import net.ion.dao.MessageRepository;
 import net.ion.entity.SaveMessage;
+import net.ion.utils.ObjectId;
 
 @Service
 public class SaveMessageService {

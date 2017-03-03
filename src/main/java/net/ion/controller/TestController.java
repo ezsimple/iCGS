@@ -1,12 +1,9 @@
 package net.ion.controller;
 
-import java.util.Date;
-import java.util.List;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.Model;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,7 +12,7 @@ import net.ion.dao.MessageRepository;
 import net.ion.entity.SaveMessage;
 
 @RestController
-public class SearchController {
+public class TestController {
 
 	protected Log logger = LogFactory.getLog(this.getClass());
 	
@@ -25,24 +22,23 @@ public class SearchController {
 	@RequestMapping("/i/want/search/{who}")
 	public void list(@PathVariable("who") String who) {
 		String path = "/hello/"+who;
-		Iterable<SaveMessage> list = dao.findByPath(path);
+		Sort sort = new Sort(new Sort.Order(Sort.Direction.ASC, "createDate"));
+		Iterable<SaveMessage> list = dao.findByPath(path, sort);
 		SaveMessage obj = null;
 		for(SaveMessage o : list) {
 			obj = o;
-			// logger.debug(o.getText());
 		}
 		
 		// obj is last SaveMessage
 		if (obj != null) {
 			String id = obj.getId();
-			Iterable<SaveMessage> data = dao.findByIdLessThanEqualAndPath(id, path);
+			String text = obj.getText();
+			logger.debug(id + ":" + text);
+			Iterable<SaveMessage> data = dao.findByIdLessThanEqualAndPath(id, path, sort);
 			for(SaveMessage o : data) {
 				logger.debug(o.getText());
 			}
 		}
-
-		
-		
 		return;
 	}
 
