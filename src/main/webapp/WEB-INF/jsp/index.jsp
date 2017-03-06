@@ -58,7 +58,7 @@
 <script>
 $(document).ready(function() { 
 	$.get("/queue/waiting",function(o) {
-		drawInit(o);
+		drawList(o);
 	})
 	connect();
 });
