@@ -1,5 +1,7 @@
 package net.ion.controller;
 
+import java.util.Date;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,8 +35,9 @@ public class TestController {
 		logger.debug(id.length());
 		SaveMessage o = dao.findById(id);
 		String text = o.getText();
+		Date day = o.getCreateDate();
 		logger.debug(id + ":" + text);
-		Iterable<SaveMessage> result = dao.findByIdGreaterThanAndPath(id, path, sort);
+		Iterable<SaveMessage> result = dao.findByCreateDateGreaterThanAndPath(day.getTime(), path, sort);
 		return new ResponseEntity(result, HttpStatus.OK);
 	}
 
@@ -52,8 +55,9 @@ public class TestController {
 		if (obj != null) {
 			String id = obj.getId();
 			String text = obj.getText();
+			Date day = obj.getCreateDate();
 			logger.debug(id + ":" + text);
-			Iterable<SaveMessage> data = dao.findByIdLessThanEqualAndPath(id, path, sort);
+			Iterable<SaveMessage> data = dao.findByCreateDateLessThanEqualAndPath(day.getTime(), path, sort);
 			for(SaveMessage o : data) {
 				logger.debug(o.getText());
 			}

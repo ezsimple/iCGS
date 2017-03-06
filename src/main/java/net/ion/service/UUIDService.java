@@ -6,8 +6,6 @@ import com.fasterxml.uuid.EthernetAddress;
 import com.fasterxml.uuid.Generators;
 import com.fasterxml.uuid.impl.TimeBasedGenerator;
 
-import net.ion.utils.ObjectId;
-
 @Service
 public class UUIDService {
 
@@ -18,8 +16,7 @@ public class UUIDService {
 	}
 
 	public static String getNextId() {
-		return new ObjectId().toString();
-		// return timeBasedGenerator.generate().toString();
+		return timeBasedGenerator.generate().toString();
 	}
 
 }
