@@ -12,7 +12,6 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 import org.springframework.messaging.MessageHeaders;
-import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.socket.messaging.SessionConnectEvent;
 import org.springframework.web.socket.messaging.SessionDisconnectEvent;
@@ -61,6 +60,8 @@ public class SessionEventListener {
 	@EventListener
 	private void handleSessionDisconnect(SessionDisconnectEvent event) {
 
+		logger.info("SessionDisconnectEvent: " + event.toString());
+
 		String sessionId = event.getSessionId();
 		ConnectEvent o = sessionRepository.get(sessionId);
 		if (o == null) return;
@@ -72,6 +73,7 @@ public class SessionEventListener {
 				sessionRepository.remove(sessionId); 
 				notifyEvent(evt);
 		});
+		
 	}
 
 }
