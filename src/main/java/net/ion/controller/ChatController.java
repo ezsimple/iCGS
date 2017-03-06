@@ -1,5 +1,6 @@
 package net.ion.controller;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -11,6 +12,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpEntity;
@@ -24,6 +26,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import net.ion.dao.SessionRepository;
 import net.ion.entity.BackMessage;
@@ -43,22 +46,32 @@ public class ChatController {
 	@Autowired
 	SaveMessageService msgSvc;
 	
-	
 	private String mkPath(final String who) {
 		return "/hello/"+who; // 특수기호인 : 는 사용할 수 없다.
 	}
 
-    private List<SaveMessage> history(String path, Pageable pageable) {
-    	Page<SaveMessage> page = msgSvc.findByPath(path, pageable);
-    	return page.getContent();
+    private List<SaveMessage> history(String last_id, String path, Pageable pageable) {
+    	logger.debug("last_id : "+last_id);
+
+		if (StringUtils.isEmpty(last_id))
+			return(msgSvc.findByPath(path, pageable).getContent());
+
+		final String id = last_id;
+		SaveMessage o = msgSvc.findById(id);
+		if(o == null)
+			return Collections.emptyList();
+		logger.debug(o.getId() + ":" + o.getText());
+
+		return (List<SaveMessage>) (msgSvc.findByCreateDateGreaterThanAndPath(o.getCreateDate(), path, null));
     }
 
-    @RequestMapping(value="/hello/{who}/list/{page}", method = RequestMethod.GET)
+    @RequestMapping(value="/hello/{who}/list/{page}", method = RequestMethod.POST)
     public HttpEntity historyWith(@PathVariable String who 
-    		,@PageableDefault(sort = "createDate" ,direction = Direction.ASC ,size = 50) 
-    		Pageable pageable) throws Exception {
+    		,@PageableDefault(sort = "createDate" ,direction = Direction.ASC ,size = 50) Pageable pageable
+    		,@RequestParam("last_id") String last_id
+    		) throws Exception {
     	String path = mkPath(who);
-		return new ResponseEntity(this.history(path, pageable), HttpStatus.OK);
+		return new ResponseEntity(this.history(last_id, path, pageable), HttpStatus.OK);
     }
 
     @MessageMapping("/hello/{who}")

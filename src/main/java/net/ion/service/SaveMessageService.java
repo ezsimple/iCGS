@@ -38,11 +38,17 @@ public class SaveMessageService {
 		return dao.findByPath(path, pageable);
 	}
 	
+	public SaveMessage findById(String id) {
+		return dao.findById(id);
+	}
+	
 	public Iterable<SaveMessage> findByCreateDateLessThanEqualAndPath(Date createDate, String path, Sort sort) {
+		if(sort == null) sort = new Sort(new Sort.Order(Sort.Direction.ASC, "createDate"));
 		return dao.findByCreateDateLessThanEqualAndPath(createDate.getTime(), path, sort);
 	}
 
 	public Iterable<SaveMessage> findByCreateDateGreaterThanAndPath(Date createDate, String path, Sort sort) {
+		if(sort == null) sort = new Sort(new Sort.Order(Sort.Direction.ASC, "createDate"));
 		return dao.findByCreateDateGreaterThanAndPath(createDate.getTime(), path, sort);
 	}
 	

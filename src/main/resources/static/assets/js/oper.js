@@ -33,7 +33,7 @@ function connect() {
 
 function reconnect() {
 	$.get("/queue/waiting",function(o) {
-		drawInit(o);
+		drawList(o);
 	});
 	waitingInit();
 	connect();
@@ -58,6 +58,10 @@ function del(o) {
 	$('#'+sessionId).remove();
 }
 
+function waitingInit() {
+    $("#waiting").html("");
+}
+
 function drawEach(o) {
 	console.log(o);
 	let operator = o.operator;
@@ -68,11 +72,7 @@ function drawEach(o) {
 	else if ("-" == operator) del(o);
 }
 
-function waitingInit() {
-    $("#waiting").html("");
-}
-
-function drawInit(messages) {
+function drawList(messages) {
     $.each(messages, function(i, o) {
     	drawEach(o);
     });

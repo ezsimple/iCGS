@@ -21,9 +21,6 @@
                 <div class="panel-heading">
                     <span class="glyphicon glyphicon-comment"></span> 
                     채팅서비스 (${who })
-                    <form class="form-inline">
-                    	<div class="btn-group pull-right"></div>
-                    </form>
                 </div>
                 <div class="panel-body" id="conversations-body">
                     <ul class="chat" id="conversations">
@@ -48,16 +45,15 @@
 </html>
 <script>
 $(document).ready(function() { 
-    var who = '<c:out value="${who }" />'; 
-    var destination = "hello";
+    let who = '<c:out value="${who }" />'; 
+    let destination = "hello";
 
 	setWho(who);
 	setUsername(who);
-
 	setDestination(destination);
 
-	$.get("/hello/"+who+"/list/0",function(messages) {
-		refreshMessages(messages, setTimeout);
+	$.post("/hello/"+who+"/list/0",{last_id:""},function(messages) {
+		drawList(messages, setTimeout);
 	})
 	connect();
 });

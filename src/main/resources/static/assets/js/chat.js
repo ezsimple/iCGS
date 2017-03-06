@@ -1,3 +1,4 @@
+var retryCnt = 0;
 var stompClient = null;
 var username = null;
 var who = null;
@@ -15,20 +16,15 @@ function getAnswerName(who) {
 }
 
 function setConnected(connected) {
-    // $("#connect").prop("disabled", connected);
-    // $("#disconnect").prop("disabled", !connected);
     if (connected) {
         $("#conversation").show();
+		retryCnt = 0; 
         return;
     }
 	$("#conversation").hide();
-    // $("#conversations").html("");
+	retryCnt++;
+    console.log('Disconnected [retry : '+retryCnt+']');
 }
-
-function getAll(page) {
-    // stompClient.send("/chat"+"/"+destination+"/"+user+"/list/"+page,{},"");
-}
-
 
 function connect() {
     var socket = new SockJS('/endpoint');
@@ -40,25 +36,27 @@ function connect() {
         setConnected(true);
         console.log('Connected: ' + frame);
         stompClient.subscribe('/topic/'+username, function (callback) {
-            showGreeting(JSON.parse(callback.body));
+            drawEach(JSON.parse(callback.body));
         });
     });
     socket.onclose = function() {
-    	disconnect();
+        setConnected(false);
+    	console.log("retry : "+retryCnt);
+    	setTimeout("reconnect()",5000); // 재시도
     }
 }
 
-function disconnect() {
-    if (stompClient != null) {
-        stompClient.disconnect();
-    }
-    setConnected(false);
-    console.log("Disconnected");
+function reconnect() {
+	let last_id = get_last_id();
+	console.log("last_id : "+last_id);
+	$.post("/hello/"+username+"/list/0",{'last_id':last_id},function(o) {
+		drawList(o, setTimeout);
+	});
+	connect();
 }
 
 function sendMesg() {
 	let v = $("#text").val();
-	// console.log('sendMesg : ' + v);
     stompClient.send("/chat"+"/"+destination+"/"+username, {}, JSON.stringify({'text': v}));
 }
 
@@ -100,54 +98,39 @@ function addResponseMessage(who, text, createDate) {
 		.append("</li>");
 }
 
-function setLastId(id) {
+function set_last_id(id) {
 	$('#last_id').val(id);
+	console.log(get_last_id());
 }
 
-function showGreeting(backMessage) {
-	let id = backMessage.id;
-	let who = backMessage.who;
-	let text = backMessage.text;
-	let createDate = backMessage.createDate;
+function get_last_id() {
+	return $('#last_id').val();
+}
+
+function drawEach(message) {
+	let id = message.id;
+	let who = message.who;
+	let text = message.text;
+	let createDate = message.createDate;
 
 	if (username == who)
 		addUserMessage(who, text, createDate);
 	else
 		addResponseMessage(who, text, createDate);
 	
-	setLastId(id);
-	toBottom();
+	set_last_id(id);
 }
 
 $(function () {
-    $("form").on('submit', function (e) {
-        e.preventDefault();
-    });
-    $( "#connect" ).click(function() { connect(); });
-    $( "#disconnect" ).click(function() { disconnect(); });
-    $( "#send" ).click(function() { sendMesg(); });
+    $("#connect").click(function() { connect(); });
+    $("#disconnect").click(function() { disconnect(); });
+    $("form").on('submit', function (e) { e.preventDefault(); });
+    $("#send").click(function() { sendMesg(); });
 });
 
-function refreshMessages(messages, timeout) {
-	let h = 0;
-    $("#conversation").html("");
+function drawList(messages, timeout) {
     $.each(messages, function(i, m) {
-    	// console.log(m);
-    	let who = m.who;
-    	let text = m.text;
-    	let createDate = m.createDate;
-    	if(username == who) {
-			addUserMessage(who, text, createDate);
-    		return true;
-    	}
-    	addResponseMessage(who, text, createDate);
+    	drawEach(m);
     });
     timeout("toBottom()",1000);
 }
-
-// $(document).ready(function() { 
-//	connect();
-//	$.get("/"+destination+"/"+username+"/list/0",function(messages) {
-//		refreshMessages(messages, setTimeout);
-//	})
-// });

@@ -22,9 +22,6 @@
                 <div class="panel-heading">
                     <span class="glyphicon glyphicon-comment"></span> 
                     To ${username }
-                    <form class="form-inline">
-                    	<div class="btn-group pull-right"></div>
-                    </form>
                 </div>
                 <div class="panel-body" id="conversations-body">
                     <ul class="chat" id="conversations">
@@ -58,16 +55,16 @@
 // --------------------+----------------------
 */%>
 $(document).ready(function() { 
-    var who = '<c:out value="${who }" />'; 			  // 오퍼레이터의 이름을 넘겨줘야 한다.
-    var username = '<c:out value="${username }" />';  // 대화상대의 값을 넘겨줘야 한다.
-    var destination = "advice";
+    let who = '<c:out value="${who }" />'; 			  // 오퍼레이터의 이름을 넘겨줘야 한다.
+    let username = '<c:out value="${username }" />';  // 대화상대의 값을 넘겨줘야 한다.
+    let destination = "advice";
 
 	setUsername(username);
 	setWho(who);
 	setDestination(destination);
 
-	$.get("/hello/"+username+"/list/0",function(messages) {
-		refreshMessages(messages, setTimeout);
+	$.post("/hello/"+username+"/list/0",{last_id:""},function(messages) {
+		drawList(messages, setTimeout);
 	})
 	connect();
 });
