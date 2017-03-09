@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import net.ion.dao.MessageRepository;
 import net.ion.entity.SaveMessage;
+import net.ion.repository.MessageRepository;
 
 @RestController
 public class TestController {

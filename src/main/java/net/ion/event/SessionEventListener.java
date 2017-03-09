@@ -16,7 +16,7 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.socket.messaging.SessionConnectEvent;
 import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 
-import net.ion.dao.SessionRepository;
+import net.ion.repository.SessionRepository;
 
 public class SessionEventListener {
 

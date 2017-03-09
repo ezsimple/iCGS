@@ -15,8 +15,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import net.ion.dao.SessionRepository;
 import net.ion.event.ConnectEvent;
+import net.ion.repository.SessionRepository;
 
 @Controller
 public class SessionController {

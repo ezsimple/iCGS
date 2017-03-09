@@ -1,4 +1,4 @@
-package net.ion.dao;
+package net.ion.repository;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

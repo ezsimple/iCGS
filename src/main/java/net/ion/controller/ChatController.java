@@ -28,10 +28,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import net.ion.dao.SessionRepository;
 import net.ion.entity.BackMessage;
 import net.ion.entity.ChatMessage;
 import net.ion.entity.SaveMessage;
+import net.ion.repository.SessionRepository;
 import net.ion.service.SaveMessageService;
 import net.ion.service.SimsimiService;
 

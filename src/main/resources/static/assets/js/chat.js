@@ -58,6 +58,7 @@ function reconnect() {
 function sendMesg() {
 	let v = $("#text").val();
     stompClient.send("/chat"+"/"+destination+"/"+username, {}, JSON.stringify({'text': v}));
+    $('#text').val('');
 }
 
 function toBottom() {
@@ -119,6 +120,7 @@ function drawEach(message) {
 		addResponseMessage(who, text, createDate);
 	
 	set_last_id(id);
+    toBottom();
 }
 
 $(function () {
@@ -132,5 +134,4 @@ function drawList(messages, timeout) {
     $.each(messages, function(i, m) {
     	drawEach(m);
     });
-    timeout("toBottom()",1000);
 }
