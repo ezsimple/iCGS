@@ -37,7 +37,7 @@ function connect() {
         console.log('Connected: ' + frame);
         stompClient.subscribe('/topic/'+username, function (callback) {
             drawEach(JSON.parse(callback.body));
-            toBottom();
+            setTimeout('toBottom()',1000);
         });
     });
     socket.onclose = function() {
