@@ -45,14 +45,14 @@ public class SessionEventListener {
 	@EventListener
 	private void handleSessionConnected(SessionConnectEvent event) {
 		MessageHeaders headers = event.getMessage().getHeaders();
-		String sessionId = (String) headers.get(SIMP_SESSION_ID);
+		String simpSessionId = (String) headers.get(SIMP_SESSION_ID);
 		Map<String, LinkedList> nativeHeaders = (Map<String, LinkedList>) headers.get(NATIVE_HEADERS);
 		List<String> usernameList = nativeHeaders.get(USER_NAME);
 		if (usernameList == null) return;
 		String username = usernameList.get(0);
 
-		ConnectEvent evt = new ConnectEvent(ADD,username,sessionId);
-		sessionRepository.add(sessionId, evt);
+		ConnectEvent evt = new ConnectEvent(ADD,username,simpSessionId);
+		sessionRepository.add(simpSessionId, evt);
 		notifyEvent(evt);
 
 	}
@@ -62,15 +62,15 @@ public class SessionEventListener {
 
 		logger.info("SessionDisconnectEvent: " + event.toString());
 
-		String sessionId = event.getSessionId();
-		ConnectEvent o = sessionRepository.get(sessionId);
+		String simpSessionId = event.getSessionId();
+		ConnectEvent o = sessionRepository.get(simpSessionId);
 		if (o == null) return;
 		String username = o.getUsername();
 
-		Object evt = new ConnectEvent(DEL,username,sessionId);
-		Optional.ofNullable(sessionRepository.get(sessionId))
+		Object evt = new ConnectEvent(DEL,username,simpSessionId);
+		Optional.ofNullable(sessionRepository.get(simpSessionId))
 			.ifPresent(x -> {
-				sessionRepository.remove(sessionId); 
+				sessionRepository.remove(simpSessionId); 
 				notifyEvent(evt);
 		});
 		

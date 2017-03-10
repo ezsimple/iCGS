@@ -20,15 +20,19 @@ public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer {
     	ThreadPoolTaskScheduler pingScheduler = new ThreadPoolTaskScheduler();
     	pingScheduler.setThreadNamePrefix("pingJob");
     	pingScheduler.initialize();
-
-		registry.enableSimpleBroker("/topic", "/queue")
-			.setHeartbeatValue(new long[]{20000, 0}).setTaskScheduler(pingScheduler);
+		registry.enableSimpleBroker("/topic","/queue")
+			.setHeartbeatValue(new long[]{10000, 10000})
+			.setTaskScheduler(pingScheduler);
+        registry.configureBrokerChannel().taskExecutor().keepAliveSeconds(20);
         registry.setApplicationDestinationPrefixes("/chat","/event");
+
+		// registry.configureBrokerChannel().setInterceptors(interceptors);
+
     }
 	
 	@Override
 	public void registerStompEndpoints(StompEndpointRegistry registry) {
-		registry.addEndpoint("/endpoint").withSockJS().setHeartbeatTime(5000);	
+		registry.addEndpoint("/endpoint").withSockJS();
 	}
 
 }

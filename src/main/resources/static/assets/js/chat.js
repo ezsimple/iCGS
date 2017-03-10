@@ -29,14 +29,14 @@ function setConnected(connected) {
 function connect() {
     var socket = new SockJS('/endpoint');
     stompClient = Stomp.over(socket);
-    stompClient.heartbeat.outgoing = 3000; // client will send heartbeat every ms
-    stompClient.heartbeat.incomming = 0 // client does not want to receive heartbeats
+    // stompClient.heartbeat.outgoing = 10000; // client will send heartbeat every ms
+    // stompClient.heartbeat.incomming = 0 // client does not want to receive heartbeats
 	var headers = {'username': who };
     stompClient.connect(headers, function (frame) {
         setConnected(true);
         console.log('Connected: ' + frame);
         stompClient.subscribe('/topic/'+username, function (callback) {
-            drawEach(JSON.parse(callback.body));
+            drawList(JSON.parse(callback.body), setTimeout);
         });
     });
     socket.onclose = function() {
@@ -58,7 +58,6 @@ function reconnect() {
 function sendMesg() {
 	let v = $("#text").val();
     stompClient.send("/chat"+"/"+destination+"/"+username, {}, JSON.stringify({'text': v}));
-    $('#text').val('');
 }
 
 function toBottom() {
@@ -120,7 +119,6 @@ function drawEach(message) {
 		addResponseMessage(who, text, createDate);
 	
 	set_last_id(id);
-    toBottom();
 }
 
 $(function () {
@@ -134,4 +132,5 @@ function drawList(messages, timeout) {
     $.each(messages, function(i, m) {
     	drawEach(m);
     });
+    timeout("toBottom()",1000);
 }
