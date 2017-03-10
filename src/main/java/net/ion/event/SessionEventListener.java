@@ -14,6 +14,7 @@ import org.springframework.context.event.EventListener;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.socket.messaging.SessionConnectEvent;
+import org.springframework.web.socket.messaging.SessionConnectedEvent;
 import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 
 import net.ion.repository.SessionRepository;
@@ -43,7 +44,7 @@ public class SessionEventListener {
     }
 
 	@EventListener
-	private void handleSessionConnected(SessionConnectEvent event) {
+	private void handleSessionConnect(SessionConnectEvent event) {
 		MessageHeaders headers = event.getMessage().getHeaders();
 		String simpSessionId = (String) headers.get(SIMP_SESSION_ID);
 		Map<String, LinkedList> nativeHeaders = (Map<String, LinkedList>) headers.get(NATIVE_HEADERS);
@@ -55,6 +56,14 @@ public class SessionEventListener {
 		sessionRepository.add(simpSessionId, evt);
 		notifyEvent(evt);
 
+	}
+
+	@EventListener
+	private void handleSessionConnected(SessionConnectedEvent event) {
+		MessageHeaders headers = event.getMessage().getHeaders();
+		String simpSessionId = (String) headers.get(SIMP_SESSION_ID);
+		Map<String, LinkedList> nativeHeaders = (Map<String, LinkedList>) headers.get(NATIVE_HEADERS);
+		logger.debug("handleSessionConnected");
 	}
 
 	@EventListener
