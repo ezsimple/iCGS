@@ -21,13 +21,11 @@ public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer {
     	pingScheduler.setThreadNamePrefix("pingJob");
     	pingScheduler.initialize();
 		registry.enableSimpleBroker("/topic","/queue")
-			.setHeartbeatValue(new long[]{10000, 10000})
+			.setHeartbeatValue(new long[]{0, 10000})
 			.setTaskScheduler(pingScheduler);
         registry.configureBrokerChannel().taskExecutor().keepAliveSeconds(20);
         registry.setApplicationDestinationPrefixes("/chat","/event");
-
-		// registry.configureBrokerChannel().setInterceptors(interceptors);
-
+		registry.configureBrokerChannel().setInterceptors(new CustomChannelInterceptor());
     }
 	
 	@Override

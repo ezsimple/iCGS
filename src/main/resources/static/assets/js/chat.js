@@ -36,7 +36,8 @@ function connect() {
         setConnected(true);
         console.log('Connected: ' + frame);
         stompClient.subscribe('/topic/'+username, function (callback) {
-            drawList(JSON.parse(callback.body), setTimeout);
+            drawEach(JSON.parse(callback.body));
+            toBottom();
         });
     });
     socket.onclose = function() {
@@ -100,7 +101,7 @@ function addResponseMessage(who, text, createDate) {
 
 function set_last_id(id) {
 	$('#last_id').val(id);
-	console.log(get_last_id());
+	// console.log(get_last_id());
 }
 
 function get_last_id() {
