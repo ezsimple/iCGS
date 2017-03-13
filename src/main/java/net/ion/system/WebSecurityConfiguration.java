@@ -1,7 +1,7 @@
 package net.ion.system;
 /*
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -19,8 +19,8 @@ import kr.grid.services.UserService;
 @Configuration
 public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 	
-	@Autowired UserService userService;
-	private Log logger = LogFactory.getLog(this.getClass());
+	@Autowired UserDetailsService userService;
+	private Logger logger = LoggerFactory.getLogger(this.getClass());
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {

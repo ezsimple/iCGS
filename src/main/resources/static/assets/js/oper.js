@@ -63,7 +63,7 @@ function waitingInit() {
 }
 
 function drawEach(o) {
-	console.log(o);
+	// console.log(o);
 	let operator = o.operator;
 	let username = o.username;
 	if (username == '운영자')
