@@ -9,7 +9,7 @@ function setWho(_who) { who = _who; }
 function setDestination(dest) { destination = dest; }
 function getAnswerName(who) {
 	switch(who) {
-	case 'bot': return "Simsimi";
+	case 'bot': return "Bot&nbsp;&nbsp;&nbsp;&nbsp;";
 	case 'oper' : return "Operator";
 	}
 	return "Unknown";

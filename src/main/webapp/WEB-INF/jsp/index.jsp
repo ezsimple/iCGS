@@ -8,6 +8,7 @@
 <title>iCGS</title>
     <link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <script src="/webjars/jquery/jquery.min.js"></script>
+    <script src="/webjars/bootstrap/js/bootstrap.min.js"></script>
     <script src="/webjars/sockjs-client/sockjs.min.js"></script>
     <script src="/webjars/stomp-websocket/stomp.min.js"></script>
     <script src="/assets/js/oper.js?_=${_ts }"></script>
@@ -53,6 +54,30 @@
 			<div id="waiting"></div>
 		</div>
 	</div>
+
+	<p></p>
+	<button class="btn btn-success btn-sm" data-toggle="collapse" data-target="#demo">구현기능</button>
+	<div id="demo" class="collapse">
+		<div class="col-md-4 col-lg-4">
+			<ol>
+				<li>채팅 채널 접속 (사용자, 오퍼레이터)</li>
+				<li>채팅 메세지 발행 (사용자)</li>
+				<li>채팅 메세지 구독 (오퍼레이터)</li>
+				<li>심심이 연동 (질의, 응답 파싱)</li>
+				<li>서버 사이드 시간 관리</li>
+				<li>메세지별 UUID 생성</li>
+				<li>대화 내용 저장</li>
+				<li>사용자별 이전 대화내역 조회</li>
+				<li>하이브리드 채팅 기능 (사용자+챗봇+오퍼레이터)</li>
+				<li>자동 재접속 기능</li>
+				<li>last_id 기능 - 재접속 이후 메세지만 가져오기</li>
+				<li>채팅 세션 관리 (연결, 해제)</li>
+				<li>HEARTBEAT 체크 (10초 주기)</li>
+				<li>HEARTBEAT을 통한 비정상 접속 해제 감지</li>
+			</ol>
+		</div>
+	</div>
+
 </body>
 </html>
 <script>

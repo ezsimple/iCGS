@@ -1,7 +1,9 @@
 package net.ion.controller;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -53,8 +55,21 @@ public class ChatController {
     private List<SaveMessage> history(String last_id, String path, Pageable pageable) {
     	logger.debug("last_id : "+last_id);
 
-		if (StringUtils.isEmpty(last_id))
-			return(msgSvc.findByPath(path, pageable).getContent());
+		if (StringUtils.isEmpty(last_id)) {
+			// handle unmodifiableList to modifiable list
+			List<SaveMessage> list = msgSvc.findByPath(path, pageable).getContent(); // unmodifiable list
+			final List<SaveMessage> modifiable = new ArrayList<>();
+			final List<SaveMessage> unmodifiable = Collections.unmodifiableList(modifiable);
+			for(SaveMessage i : list) {
+				modifiable.add(i);
+				last_id = i.getId();
+			}
+			// 인사말은 DB로 부터 가져올 수 있도록 ... (추후 구현)
+			// 오퍼레이터에게도 보여지는게 맞는건지?
+			SaveMessage greeting = new SaveMessage(last_id, "bot", "안녕하세요 고객님. 채팅봇 입니다.",path);
+			modifiable.add(greeting);
+			return unmodifiable;
+		}
 
 		final String id = last_id;
 		SaveMessage o = msgSvc.findById(id);
