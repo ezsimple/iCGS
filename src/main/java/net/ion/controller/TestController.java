@@ -16,15 +16,25 @@ import org.springframework.web.bind.annotation.RestController;
 
 import net.ion.entity.SaveMessage;
 import net.ion.repository.MessageRepository;
+import net.ion.service.WisenutService;
 
 @RestController
 public class TestController {
 
 	protected Log logger = LogFactory.getLog(this.getClass());
 
-	
 	@Autowired
 	MessageRepository dao;
+	
+	@Autowired
+	WisenutService svc;
+	
+	
+	@RequestMapping("/wn")
+	public void wn() throws Exception {
+		svc.exec("");
+	}
+	
 	
 	@RequestMapping("/hello/find/lostmessages")
 	public HttpEntity findLostMessages(@RequestParam("username") String who,

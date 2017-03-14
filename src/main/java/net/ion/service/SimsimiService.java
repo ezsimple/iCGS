@@ -4,8 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import net.ion.utils.ProxyUtils;
@@ -13,7 +13,7 @@ import net.ion.utils.ProxyUtils;
 @Service
 public class SimsimiService {
 
-	protected Log logger = LogFactory.getLog(SimsimiService.class);
+	protected Logger logger = LoggerFactory.getLogger(SimsimiService.class);
 
 	public String exec(String mesg) throws Exception {
 
