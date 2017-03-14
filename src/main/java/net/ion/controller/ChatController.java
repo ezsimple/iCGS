@@ -52,7 +52,7 @@ public class ChatController {
 		return "/hello/"+who; // 특수기호인 : 는 사용할 수 없다.
 	}
 
-    private List<SaveMessage> history(String last_id, String path, Pageable pageable) {
+    private List<SaveMessage> history(String last_id, String who, String path, Pageable pageable) {
     	logger.debug("last_id : "+last_id);
 
 		if (StringUtils.isEmpty(last_id)) {
@@ -66,7 +66,7 @@ public class ChatController {
 			}
 			// 인사말은 DB로 부터 가져올 수 있도록 ... (추후 구현)
 			// 오퍼레이터에게도 보여지는게 맞는건지?
-			SaveMessage greeting = new SaveMessage(last_id, "bot", "안녕하세요 고객님. 채팅봇 입니다.",path);
+			SaveMessage greeting = new SaveMessage(last_id, "bot", "안녕하세요. "+who+" 고객님. 채팅봇 입니다.",path);
 			modifiable.add(greeting);
 			return unmodifiable;
 		}
@@ -86,7 +86,7 @@ public class ChatController {
     		,@RequestParam("last_id") String last_id
     		) throws Exception {
     	String path = mkPath(who);
-		return new ResponseEntity(this.history(last_id, path, pageable), HttpStatus.OK);
+		return new ResponseEntity(this.history(last_id, who, path, pageable), HttpStatus.OK);
     }
 
     @MessageMapping("/hello/{who}")
