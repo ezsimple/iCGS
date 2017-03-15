@@ -8,6 +8,7 @@
     <title>user</title>
     <link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <script src="/webjars/jquery/jquery.min.js"></script>
+    <script src="/webjars/bootstrap/js/bootstrap.min.js"></script>
     <script src="/webjars/sockjs-client/sockjs.min.js"></script>
     <script src="/webjars/stomp-websocket/stomp.min.js"></script>
     <link href="/assets/css/chat.css?_=${_ts }" rel="stylesheet">
@@ -20,7 +21,7 @@
             <div class="panel panel-primary">
                 <div class="panel-heading">
                     <span class="glyphicon glyphicon-comment"></span> 
-                    채팅서비스 (${who })
+                    와이즈넛 연동 채팅서비스 (${who })
                 </div>
                 <div class="panel-body" id="conversations-body">
                     <ul class="chat" id="conversations">

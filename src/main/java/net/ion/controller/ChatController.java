@@ -36,6 +36,7 @@ import net.ion.entity.SaveMessage;
 import net.ion.repository.SessionRepository;
 import net.ion.service.SaveMessageService;
 import net.ion.service.SimsimiService;
+import net.ion.service.WisenutService;
 
 @Controller
 public class ChatController {
@@ -44,6 +45,9 @@ public class ChatController {
 	
 	@Autowired
 	SimsimiService simSvc;
+	
+	@Autowired
+	WisenutService wnSvc;
 
 	@Autowired
 	SaveMessageService msgSvc;
@@ -109,7 +113,7 @@ public class ChatController {
 		BackController.sendBack("/topic/"+who, new BackMessage(id,who,text,date));
 		
 		who = "bot";
-		text = simSvc.exec(mesg.getText());
+		text = wnSvc.exec(mesg.getText());
 		if(text == null)
 			return null;
 		saved = msgSvc.save(who,text,path);
