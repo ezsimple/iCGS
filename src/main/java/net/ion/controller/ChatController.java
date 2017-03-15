@@ -61,18 +61,18 @@ public class ChatController {
 
 		if (StringUtils.isEmpty(last_id)) {
 			// handle unmodifiableList to modifiable list
-			List<SaveMessage> list = msgSvc.findByPath(path, pageable).getContent(); // unmodifiable list
-			final List<SaveMessage> modifiable = new ArrayList<>();
-			final List<SaveMessage> unmodifiable = Collections.unmodifiableList(modifiable);
-			for(SaveMessage i : list) {
-				modifiable.add(i);
-				last_id = i.getId();
-			}
+			// List<SaveMessage> list = msgSvc.findByPath(path, pageable).getContent(); // unmodifiable list
+			// final List<SaveMessage> modifiable = new ArrayList<>();
+			// final List<SaveMessage> unmodifiable = Collections.unmodifiableList(modifiable);
+			// for(SaveMessage i : list) {
+			//	modifiable.add(i);
+			//	last_id = i.getId();
+			// }
 			// 인사말은 DB로 부터 가져올 수 있도록 ... (추후 구현)
 			// 오퍼레이터에게도 보여지는게 맞는건지?
-			SaveMessage greeting = new SaveMessage(last_id, "bot", "안녕하세요. "+who+" 고객님. 채팅봇 입니다.",path);
-			modifiable.add(greeting);
-			return unmodifiable;
+			// SaveMessage greeting = new SaveMessage(last_id, "bot", "안녕하세요. "+who+" 고객님. 채팅봇 입니다.",path);
+			// modifiable.add(greeting);
+			return msgSvc.findByPath(path, pageable).getContent();
 		}
 
 		final String id = last_id;

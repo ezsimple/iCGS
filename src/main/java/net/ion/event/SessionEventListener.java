@@ -1,5 +1,6 @@
 package net.ion.event;
 
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -7,21 +8,27 @@ import java.util.Optional;
 
 import javax.annotation.Resource;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
+import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.messaging.simp.stomp.StompCommand;
+import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.web.socket.messaging.SessionConnectEvent;
 import org.springframework.web.socket.messaging.SessionConnectedEvent;
 import org.springframework.web.socket.messaging.SessionDisconnectEvent;
+import org.springframework.web.socket.messaging.SessionSubscribeEvent;
 
+import net.ion.entity.BackMessage;
 import net.ion.repository.SessionRepository;
 
 public class SessionEventListener {
 
-	protected Log logger = LogFactory.getLog(this.getClass());
+	protected Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	@Resource
 	SessionRepository sessionRepository;
@@ -82,6 +89,37 @@ public class SessionEventListener {
 				sessionRepository.remove(simpSessionId); 
 				notifyEvent(evt);
 		});
+		
+	}
+
+    private void greeting(String destination,String who) {
+    	final String text = "안녕하세요. " + who + " 고객님. 채팅봇 입니다.";
+    	BackMessage msg = new BackMessage("","bot",text,new Date());
+        template.convertAndSend(destination, msg);
+    }
+	
+    // 사용자 고객에게만 인사말 출력되도록 기능 구현
+	@EventListener
+	private void handleSessionSubscribeEvent(SessionSubscribeEvent event) {
+	      Message<byte[]> message = event.getMessage();
+	      MessageHeaders headers = event.getMessage().getHeaders();
+	      StompHeaderAccessor accessor = StompHeaderAccessor.wrap(message);
+	      StompCommand command = accessor.getCommand();
+	      if (command.equals(StompCommand.SUBSCRIBE)) {
+	          String sessionId = accessor.getSessionId();
+	          String stompSubscriptionId = accessor.getSubscriptionId();
+	          String destination = accessor.getDestination();
+	          // Handle subscription event here
+	          // e.g. send welcome message to *destination*
+	          logger.debug("StompCommand.SUBSCRIBE : {}",destination);
+	          if(StringUtils.startsWith(destination, "/topic")) {
+	        	  String[] who = StringUtils.split(destination, "/");
+	        	  for(String s : who) {
+	        		  logger.debug(s);
+	        	  }
+	        	  greeting(destination,who[1]);
+	          }
+	       }
 		
 	}
 
