@@ -16,15 +16,12 @@
 </head>
 <body>
 <div class="container">
-<form>
     <div class="row">
         <div class="col-md-5">
             <div class="panel panel-primary">
                 <div class="panel-heading">
-                    <span class="glyphicon glyphicon-comment"></span>
+                    <span class="glyphicon glyphicon-comment"></span> 
                     와이즈넛 연동 채팅서비스 (${who })
-                    <div class="btn-group pull-right">
-                    </div>
                 </div>
                 <div class="panel-body" id="conversations-body">
                     <ul class="chat" id="conversations">
@@ -32,17 +29,18 @@
                 </div>
                 <div class="panel-footer">
                     <div class="input-group">
-                    	<input id="last_id" type="hidden" />
-                        <input id="text" type="text" class="form-control form-control-inline input-sm" placeholder="Type your message here..." autocomplete="off" autofocus/>
-                        <span class="input-group-btn">
-                        <button class="btn btn-warning btn-sm" id="btn-chat">보내기</button>
-                        </span>
+                    	<form class="form-inline">
+                        	<span class="input-group-btn">
+                        	<input id="last_id" type="hidden" />
+                        	<input id="text" type="text" class="form-control input-sm" placeholder="" autocomplete="off" />
+                            	<button class="btn btn-warning btn-sm" id="send" >보내기</button>
+                        	</span>
+                    	</form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</form>
 </div>
 </body>
 </html>

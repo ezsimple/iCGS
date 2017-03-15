@@ -125,7 +125,7 @@ function drawEach(message) {
 $(function () {
     $("#connect").click(function() { connect(); });
     $("#disconnect").click(function() { disconnect(); });
-    $("form").on('submit', function (e) { e.preventDefault(); });
+    $("form").on('submit', function (e) { e.preventDefault(); sendMesg(); });
     $("#send").click(function() { sendMesg(); });
 });
 

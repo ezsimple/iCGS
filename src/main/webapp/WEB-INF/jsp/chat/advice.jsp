@@ -17,6 +17,7 @@
 </head>
 <body>
 <div class="container">
+<form>
     <div class="row">
         <div class="col-md-5">
             <div class="panel panel-success">
@@ -30,18 +31,17 @@
                 </div>
                 <div class="panel-footer">
                     <div class="input-group">
-                    	<form class="form-inline">
-                        	<span class="input-group-btn">
-                        		<input id="last_id" type="hidden" />
-								<input id="text" type="text" class="form-control form-control-inline input-sm" placeholder="" autocomplete="off" />
-                            	<button class="btn btn-success btn-sm" id="send" >보내기</button>
-                        	</span>
-                    	</form>
+                    	<input id="last_id" type="hidden" />
+                        <input id="text" type="text" class="form-control input-sm" placeholder="Type your message here..." autocomplete="off" autofocus/>
+                        <span class="input-group-btn">
+                        <button class="btn btn-warning btn-sm" id="btn-chat">보내기</button>
+                        </span>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</form>
 </div>
 </body>
 </html>
