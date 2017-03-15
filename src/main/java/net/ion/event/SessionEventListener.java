@@ -24,7 +24,10 @@ import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 import org.springframework.web.socket.messaging.SessionSubscribeEvent;
 
 import net.ion.entity.BackMessage;
+import net.ion.entity.SaveMessage;
+import net.ion.repository.MessageRepository;
 import net.ion.repository.SessionRepository;
+import net.ion.service.SaveMessageService;
 
 public class SessionEventListener {
 
@@ -32,6 +35,9 @@ public class SessionEventListener {
 
 	@Resource
 	SessionRepository sessionRepository;
+	
+	@Autowired
+	SaveMessageService saveMessageService;
 
 	private final String SIMP_SESSION_ID = "simpSessionId";
 	private final String NATIVE_HEADERS = "nativeHeaders";
@@ -92,8 +98,13 @@ public class SessionEventListener {
 		
 	}
 
-    private void greeting(String destination,String who) {
-    	final String text = "안녕하세요. " + who + " 고객님. 채팅봇 입니다.";
+    private void greeting(String destination) {
+	    String[] who = StringUtils.split(destination, "/");
+    	final String text = "안녕하세요. " + who[1] + " 고객님. 채팅봇 입니다.";
+    	// String path = "/hello/"+who[1];
+    	// SaveMessage saveMessage = saveMessageService.findOneByPath(path);
+    	// String id = saveMessage.getId();
+    	// logger.debug(id);
     	BackMessage msg = new BackMessage("","bot",text,new Date());
         template.convertAndSend(destination, msg);
     }
@@ -113,11 +124,13 @@ public class SessionEventListener {
 	          // e.g. send welcome message to *destination*
 	          logger.debug("StompCommand.SUBSCRIBE : {}",destination);
 	          if(StringUtils.startsWith(destination, "/topic")) {
-	        	  String[] who = StringUtils.split(destination, "/");
-	        	  for(String s : who) {
-	        		  logger.debug(s);
-	        	  }
-	        	  greeting(destination,who[1]);
+	      		Map<String, LinkedList> nativeHeaders = (Map<String, LinkedList>) headers.get(NATIVE_HEADERS);
+	    		List<String> usernameList = nativeHeaders.get(USER_NAME);
+	    		if (usernameList == null) return;
+	    		String username = usernameList.get(0);
+	    		// 운영자가 아닌 고객(사용자)에게만 인사하기
+	    		if(!"운영자".equals(username))
+	    			greeting(destination);
 	          }
 	       }
 		

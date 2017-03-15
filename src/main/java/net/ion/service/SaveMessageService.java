@@ -38,6 +38,10 @@ public class SaveMessageService {
 		return dao.findByPath(path, pageable);
 	}
 	
+	public String findMaxid(String path) {
+		return dao.findMaxId(path);
+	}
+	
 	public SaveMessage findById(String id) {
 		return dao.findById(id);
 	}

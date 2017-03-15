@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import net.ion.entity.SaveMessage;
 import net.ion.repository.MessageRepository;
+import net.ion.service.SaveMessageService;
 import net.ion.service.WisenutService;
 
 @RestController
@@ -29,10 +30,14 @@ public class TestController {
 	@Autowired
 	WisenutService svc;
 	
+	@Autowired
+	SaveMessageService smSvc;
 	
-	@RequestMapping("/wn")
-	public void wn() throws Exception {
-		svc.exec("");
+	
+	@RequestMapping("/test1")
+	public void test1() throws Exception {
+		String path = "/hello/무식이";
+		smSvc.findMaxid(path);
 	}
 	
 	
