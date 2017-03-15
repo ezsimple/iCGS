@@ -20,7 +20,7 @@
 <form>
     <div class="row">
         <div class="col-md-5">
-            <div class="panel panel-success">
+            <div class="panel panel-danger">
                 <div class="panel-heading">
                     <span class="glyphicon glyphicon-comment"></span> 
                     To ${username }
