@@ -24,10 +24,9 @@ import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 import org.springframework.web.socket.messaging.SessionSubscribeEvent;
 
 import net.ion.entity.BackMessage;
-import net.ion.entity.SaveMessage;
-import net.ion.repository.MessageRepository;
 import net.ion.repository.SessionRepository;
 import net.ion.service.SaveMessageService;
+import net.ion.service.WisenutService;
 
 public class SessionEventListener {
 
@@ -38,6 +37,8 @@ public class SessionEventListener {
 	
 	@Autowired
 	SaveMessageService saveMessageService;
+	
+	// @Autowired WisenutService wnSvc;
 
 	private final String SIMP_SESSION_ID = "simpSessionId";
 	private final String NATIVE_HEADERS = "nativeHeaders";
