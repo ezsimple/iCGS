@@ -32,7 +32,7 @@
                 <div class="panel-footer">
                     <div class="input-group">
                     	<input id="last_id" type="hidden" />
-                        <input id="text" type="text" class="form-control input-sm" placeholder="Type your message here..." autocomplete="off" autofocus/>
+                        <input id="text" type="text" class="form-control input-sm" placeholder="yeogie mesijileul iblyeoghasibsio ..." autocomplete="off" autofocus/>
                         <span class="input-group-btn">
                         <button class="btn btn-warning btn-sm" id="btn-chat">보내기</button>
                         </span>
